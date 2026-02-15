@@ -131,6 +131,7 @@ layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer" unique_id=354665567]
+custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -142,6 +143,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_tefeu")
 max_value = 10.0
 step = 1.0
 value = 5.0
+show_percentage = false
 
 [node name="LevelLabel" type="Label" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer" unique_id=905797926]
 layout_mode = 2
@@ -182,5 +184,7 @@ angle_max = 360.0
 color_initial_ramp = SubResource("Gradient_o6xl0")
 hue_variation_min = 1.0
 hue_variation_max = 1.0
+
+[node name="Fishes" type="Node2D" parent="." unique_id=1673434488]
 
 [connection signal="area_entered" from="Player/Area2D" to="." method="_on_area_2d_area_entered"]

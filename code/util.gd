@@ -7,7 +7,10 @@ enum Size {
 	MEDIUM,
 	LARGE,
 	EXTRA_LARGE,
-	DOUBLE_LARGE 
+	DOUBLE_LARGE,
+	HUGE,
+	GIANT,
+	COLOSSAL
 	}
 
 const size_to_scale = {
@@ -17,4 +20,7 @@ const size_to_scale = {
 	Size.LARGE : Vector2(3.2, 3.2),
 	Size.EXTRA_LARGE : Vector2(3.6, 3.6),
 	Size.DOUBLE_LARGE : Vector2(4.0, 4.0),
+	Size.HUGE: Vector2(4.4, 4.4),
+	Size.GIANT: Vector2(4.8, 4.8),
+	Size.COLOSSAL: Vector2(5.2, 5.2)
 }

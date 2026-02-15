@@ -11,10 +11,18 @@ var direction
 var size_screen
 var fish_scale
 var level = 1
+var fish_level = 1
 var level_to_scale = {
 	1: [Util.Size.EXTRA_SMALL, Util.Size.SMALL, Util.Size.MEDIUM],
-	2: [Util.Size.LARGE, Util.Size.EXTRA_LARGE, Util.Size.DOUBLE_LARGE]
+	2: [Util.Size.LARGE, Util.Size.EXTRA_LARGE, Util.Size.DOUBLE_LARGE],
+	3: [Util.Size.HUGE, Util.Size.GIANT, Util.Size.COLOSSAL]
 }
+var level_to_texture = {
+	1: [0, 1 ,2],
+	2: [3, 4, 5],
+	3: [6, 7, 8]
+}
+
 
 func _ready() -> void:
 	size_screen = get_window().get_visible_rect().size
@@ -34,6 +42,7 @@ func _process(delta: float) -> void:
 		move_to_left(delta)
 	if direction == "right":
 		move_to_right(delta)
+	
 
 
 func _on_visible_on_screen_enabler_2d_screen_exited() -> void:
@@ -41,21 +50,26 @@ func _on_visible_on_screen_enabler_2d_screen_exited() -> void:
 
 
 func reset_spawn() -> void:
+	if level > 3:
+		fish_level = 2
+	if level > 6:
+		fish_level = 3
 	direction = ["left", "right"].pick_random()
-	
+	print("level - ", level)
+	print("fish level - ", fish_level)
 	if direction == "left":
-		chage_texture([0, 1, 2].pick_random())
+		chage_texture(level_to_texture[fish_level].pick_random())
 		position.x = 0
-		level = randi_range(0, 2)
-		fish_scale = Util.size_to_scale[level_to_scale[1][level]]
+		#level = randi_range(0, 2)
+		fish_scale = Util.size_to_scale[level_to_scale[fish_level].pick_random()]
 		scale = fish_scale
 		flip_h = true
 		global_position.y = randi_range(45, size_screen.y - 32)
 	if direction == "right":
-		chage_texture([0, 1, 2].pick_random())
+		chage_texture(level_to_texture[fish_level].pick_random())
 		global_position.x = size_screen.x
-		level = randi_range(0, 2)
-		fish_scale = Util.size_to_scale[level_to_scale[1][level]]
+		#level = randi_range(0, 2)
+		fish_scale = Util.size_to_scale[level_to_scale[fish_level].pick_random()]
 		scale = fish_scale
 		flip_h = false
 		global_position.y = randi_range(45, size_screen.y - 32)
