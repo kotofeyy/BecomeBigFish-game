@@ -1,12 +1,15 @@
 [gd_scene format=3 uid="uid://di8mjm58dd23k"]
 
+[ext_resource type="Texture2D" uid="uid://cyskeytkcmv82" path="res://sprites/FishSheet.png" id="1_8g0i4"]
 [ext_resource type="Script" uid="uid://btrwo2j3sqyuy" path="res://scenes/fish.gd" id="1_n6yr6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8g0i4"]
+size = Vector2(81.33757, 81.33757)
 
-[node name="Fish" type="Panel" unique_id=1900594043]
-offset_right = 32.0
-offset_bottom = 32.0
+[node name="Fish" type="Sprite2D" unique_id=1842238080]
+texture = ExtResource("1_8g0i4")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
 script = ExtResource("1_n6yr6")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1480195052]
@@ -14,11 +17,10 @@ collision_layer = 2
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1578496392]
-position = Vector2(16, 16)
-scale = Vector2(1.57, 1.57)
+scale = Vector2(0.205, 0.205)
 shape = SubResource("RectangleShape2D_8g0i4")
 
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=509498923]
-rect = Rect2(0, 0, 32, 32)
+rect = Rect2(-8, -8, 16, 16)
 
 [connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]

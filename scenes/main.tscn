@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cuwgnvbdqghcq"]
 
 [ext_resource type="Script" uid="uid://bxdyc0io1c0sj" path="res://code/main.gd" id="1_0wfyh"]
-[ext_resource type="Texture2D" uid="uid://ddxmxgyyfy8mn" path="res://icon.svg" id="2_sugp2"]
+[ext_resource type="Texture2D" uid="uid://cyskeytkcmv82" path="res://sprites/FishSheet.png" id="2_sugp2"]
 [ext_resource type="AudioStream" uid="uid://mcin1q5t7vwl" path="res://sounds/eat.wav" id="3_sugp2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sugp2"]
@@ -13,16 +13,46 @@ script = ExtResource("1_0wfyh")
 
 [node name="Player" type="Sprite2D" parent="." unique_id=442083430]
 texture = ExtResource("2_sugp2")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
 
 [node name="Area2D" type="Area2D" parent="Player" unique_id=1424967699]
 collision_mask = 2
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D" unique_id=461448838]
-scale = Vector2(6, 6)
+scale = Vector2(0.755, 0.755)
 shape = SubResource("RectangleShape2D_sugp2")
 
 [node name="AudioEat" type="AudioStreamPlayer" parent="." unique_id=1628618054]
 stream = ExtResource("3_sugp2")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=953804463]
+
+[node name="Panel" type="Panel" parent="CanvasLayer" unique_id=1533811978]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.062000003
+offset_bottom = 0.3599968
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel" unique_id=1341887099]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Panel/VBoxContainer" unique_id=354665567]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 10.0
+step = 1.0
+
+[node name="LevelLabel" type="Label" parent="CanvasLayer/Panel/VBoxContainer" unique_id=905797926]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [connection signal="area_entered" from="Player/Area2D" to="." method="_on_area_2d_area_entered"]
