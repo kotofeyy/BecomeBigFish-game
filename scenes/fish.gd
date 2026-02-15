@@ -55,8 +55,6 @@ func reset_spawn() -> void:
 	if level > 6:
 		fish_level = 3
 	direction = ["left", "right"].pick_random()
-	print("level - ", level)
-	print("fish level - ", fish_level)
 	if direction == "left":
 		chage_texture(level_to_texture[fish_level].pick_random())
 		position.x = 0

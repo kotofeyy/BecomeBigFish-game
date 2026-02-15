@@ -16,6 +16,7 @@ var has_game_started := false
 var player_scale
 var score = 0
 var level = 1
+var max_value_of_progress_bar = 10
 
 func _ready() -> void:
 	start_game()
@@ -50,7 +51,6 @@ func spawn_fishes() -> void:
 
 func fish_level_update() -> void:
 	var children = fishes.get_children()
-	print("player level - ", level)
 	for fish: Fish in children:
 		fish.level = level
 		fish.reset_spawn()
@@ -62,19 +62,18 @@ func _process(delta: float) -> void:
 		level_up()
 		clear_fishes()
 		spawn_fishes()
-		#fish_level_update()
 		progress_bar.min_value = score
-		progress_bar.max_value = level * 10
+		max_value_of_progress_bar = max_value_of_progress_bar * 1.4
+		print("max value of progress bar - ", max_value_of_progress_bar)
+		progress_bar.max_value = level * max_value_of_progress_bar
+	# добавил немного вязкозти, для ощущения под водой
 	var weight = 0.1
 	player.global_position = player.global_position.lerp(get_global_mouse_position(), weight)
 
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	# добавил немного вязкозти, для ощущения под водой
-	
 	var mouse_velocity = Input.get_last_mouse_velocity()
-	
 	if mouse_velocity.x > 0:
 		player.flip_h = true
 	elif mouse_velocity.x < 0:
