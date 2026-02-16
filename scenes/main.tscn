@@ -38,6 +38,10 @@ border_width_bottom = 8
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_choun"]
 bg_color = Color(0.9372549, 0.4117647, 0.38039216, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eb6dy"]
+bg_color = Color(0.34901962, 0.68235296, 0.4745098, 1)
+border_width_bottom = 10
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_tbgi4"]
 atlas = ExtResource("4_jyhfs")
 region = Rect2(0, 0, 32, 32)
@@ -184,7 +188,6 @@ theme_override_styles/background = SubResource("StyleBoxFlat_tbgi4")
 theme_override_styles/fill = SubResource("StyleBoxFlat_tefeu")
 max_value = 10.0
 step = 1.0
-value = 5.0
 show_percentage = false
 
 [node name="LevelLabel" type="Label" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer" unique_id=905797926]
@@ -244,6 +247,62 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_choun")
+
+[node name="EndGamePanel" type="Panel" parent="CanvasLayer" unique_id=1544777590]
+custom_minimum_size = Vector2(400, 300)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eb6dy")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/EndGamePanel" unique_id=1676105238]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/EndGamePanel/MarginContainer" unique_id=722202580]
+layout_mode = 2
+theme_override_constants/separation = 70
+
+[node name="CountOfFishLabel" type="Label" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer" unique_id=32734393]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Рыбы съедено: 123"
+horizontal_alignment = 1
+
+[node name="AgainLabel" type="Label" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer" unique_id=1611567541]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Заново?"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer" unique_id=1060874092]
+layout_mode = 2
+
+[node name="RestartButton" type="Button" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1452430027]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Да"
+
+[node name="CancelButton" type="Button" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1186989350]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "НЕТ"
 
 [node name="AnimatedSpriteEat" type="AnimatedSprite2D" parent="." unique_id=1729697139]
 scale = Vector2(2, 2)
@@ -307,5 +366,7 @@ autostart = true
 
 [connection signal="area_entered" from="Player/Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="pressed" from="CanvasLayer/StartGameButton" to="." method="_on_start_game_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer/HBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
 [connection signal="timeout" from="TimerForShield" to="." method="_on_timer_for_shield_timeout"]
 [connection signal="timeout" from="TimerForHeart" to="." method="_on_timer_for_heart_timeout"]

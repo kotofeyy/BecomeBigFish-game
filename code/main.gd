@@ -17,6 +17,8 @@ extends Control
 @onready var level_label: Label = $CanvasLayer/Panel/MarginContainer/VBoxContainer/LevelLabel
 @onready var animated_sprite_eat: AnimatedSprite2D = $AnimatedSpriteEat
 @onready var start_game_button: Button = $CanvasLayer/StartGameButton
+@onready var end_game_panel: Panel = $CanvasLayer/EndGamePanel
+@onready var count_of_fish_label: Label = $CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer/CountOfFishLabel
 
 
 var has_game_started := false
@@ -44,6 +46,8 @@ func start_game() -> void:
 	update_heart()
 	chage_texture(level - 1)
 	progress_bar.max_value = level * 10
+	progress_bar.min_value = score
+	progress_bar.value = score
 	player_scale = Util.size_to_scale[level - 1]
 	player.scale = player_scale
 	clear_fishes()
@@ -210,12 +214,31 @@ func update_heart() -> void:
 
 
 func _on_timer_for_shield_timeout() -> void:
-	on_shield_dropping()
+	if game_is_started:
+		on_shield_dropping()
 
 
 func _on_timer_for_heart_timeout() -> void:
-	on_heart_dropping()
+	if game_is_started:
+		on_heart_dropping()
 
 
 func on_dead() -> void:
-	pass
+	game_is_started = false
+	end_game_panel.visible = true
+	clear_fishes()
+	count_of_fish_label.text = "Рыбы съедено: " + str(score)
+
+
+func _on_restart_button_pressed() -> void:
+	game_is_started = true
+	end_game_panel.visible = false
+	start_game()
+
+
+func _on_cancel_button_pressed() -> void:
+	clear_fishes()
+	start_game_button.visible = true
+	end_game_panel.visible = false
+	game_is_started = false
+	
