@@ -5,8 +5,10 @@
 [ext_resource type="AudioStream" uid="uid://mcin1q5t7vwl" path="res://sounds/eat.wav" id="3_sugp2"]
 [ext_resource type="Texture2D" uid="uid://eeli16t335os" path="res://sprites/hit_white.png" id="4_jyhfs"]
 [ext_resource type="Texture2D" uid="uid://40k46y3wemku" path="res://sprites/background.png" id="4_tbgi4"]
+[ext_resource type="Texture2D" uid="uid://bcl21swdqovy0" path="res://sprites/heart.png" id="5_tipki"]
 [ext_resource type="AudioStream" uid="uid://76j0pr8l3y4q" path="res://sounds/magic_game_win_success.wav" id="6_tefeu"]
 [ext_resource type="Texture2D" uid="uid://y1ew1qivwerl" path="res://sprites/konfetty.jpeg" id="7_o6xl0"]
+[ext_resource type="Script" uid="uid://clgllwsf8uycq" path="res://code/play_pause.gd" id="9_85g3d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sugp2"]
 
@@ -19,6 +21,10 @@ border_color = Color(0.7204688, 0.7204669, 0.72046727, 1)
 bg_color = Color(0.3572353, 0.6802573, 0.45501316, 1)
 border_width_bottom = 6
 border_color = Color(0.2721296, 0.5416109, 0.3554557, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tipki"]
+bg_color = Color(0.35078898, 0.68169004, 0.47556067, 1)
+border_width_bottom = 8
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tbgi4"]
 atlas = ExtResource("4_jyhfs")
@@ -69,7 +75,12 @@ colors = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 1)
 
 [node name="Main" type="Control" unique_id=1144979774]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_0wfyh")
 
 [node name="Player" type="Sprite2D" parent="." unique_id=442083430]
@@ -91,7 +102,7 @@ stream = ExtResource("3_sugp2")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=953804463]
 layer = -1
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=1534021552]
+[node name="Background" type="TextureRect" parent="CanvasLayer" unique_id=1534021552]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -101,6 +112,7 @@ offset_right = 128.0
 offset_bottom = 152.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("4_tbgi4")
 
 [node name="Panel" type="Panel" parent="CanvasLayer" unique_id=1533811978]
@@ -145,12 +157,38 @@ show_percentage = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer" unique_id=668034893]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer" unique_id=1465449493]
+layout_mode = 2
+texture = ExtResource("5_tipki")
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer" unique_id=921575899]
+layout_mode = 2
+texture = ExtResource("5_tipki")
+
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer" unique_id=516343048]
+layout_mode = 2
+texture = ExtResource("5_tipki")
+
+[node name="StartGameButton" type="Button" parent="CanvasLayer" unique_id=951879490]
+process_mode = 3
+custom_minimum_size = Vector2(500, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -136.5
+offset_top = -34.5
+offset_right = 136.5
+offset_bottom = 34.5
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 44
+theme_override_styles/normal = SubResource("StyleBoxFlat_tipki")
+text = "Начать игру"
 
 [node name="AnimatedSpriteEat" type="AnimatedSprite2D" parent="." unique_id=1729697139]
 scale = Vector2(2, 2)
@@ -164,7 +202,7 @@ speed_scale = 3.0
 stream = ExtResource("6_tefeu")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1929577164]
-position = Vector2(640, 360)
+position = Vector2(640, 92)
 emitting = false
 amount = 100
 texture = ExtResource("7_o6xl0")
@@ -183,4 +221,9 @@ hue_variation_max = 1.0
 
 [node name="Fishes" type="Node2D" parent="." unique_id=1673434488]
 
+[node name="PlayPause" type="Node" parent="." unique_id=1006658524]
+process_mode = 3
+script = ExtResource("9_85g3d")
+
 [connection signal="area_entered" from="Player/Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="pressed" from="CanvasLayer/StartGameButton" to="." method="_on_start_game_button_pressed"]

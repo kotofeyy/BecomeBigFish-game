@@ -10,6 +10,7 @@ extends Control
 @onready var progress_bar: ProgressBar = $CanvasLayer/Panel/MarginContainer/VBoxContainer/ProgressBar
 @onready var level_label: Label = $CanvasLayer/Panel/MarginContainer/VBoxContainer/LevelLabel
 @onready var animated_sprite_eat: AnimatedSprite2D = $AnimatedSpriteEat
+@onready var start_game_button: Button = $CanvasLayer/StartGameButton
 
 
 var has_game_started := false
@@ -17,14 +18,20 @@ var player_scale
 var score = 0
 var level = 1
 var max_value_of_progress_bar = 10
+var game_is_started = false
+var count_of_fishes = 15
+
 
 func _ready() -> void:
-	start_game()
+	
+	pass
+	#start_game()
 	
 
 func start_game() -> void:
+	get_tree().paused = false
 	score = 0
-	level = 1
+	level = 8
 	
 	chage_texture(level - 1)
 	progress_bar.max_value = level * 10
@@ -42,7 +49,7 @@ func clear_fishes() -> void:
 
 
 func spawn_fishes() -> void:
-	for i in 15:
+	for i in count_of_fishes:
 		var fish: Fish = fish_preload.instantiate()
 		fish.level = level
 		fishes.add_child(fish)
@@ -66,9 +73,12 @@ func _process(delta: float) -> void:
 		max_value_of_progress_bar = max_value_of_progress_bar * 1.4
 		print("max value of progress bar - ", max_value_of_progress_bar)
 		progress_bar.max_value = level * max_value_of_progress_bar
-	# добавил немного вязкозти, для ощущения под водой
-	var weight = 0.1
-	player.global_position = player.global_position.lerp(get_global_mouse_position(), weight)
+	if  game_is_started:
+		# добавил немного вязкозти, для ощущения под водой
+		var weight = 0.1
+		player.global_position = player.global_position.lerp(get_global_mouse_position(), weight)
+	
+	
 
 
 
@@ -111,10 +121,21 @@ func chage_texture(index: int) -> void:
 func level_up() -> void:
 	level += 1
 	cpu_particles_2d.restart()
-	if level < 9:
+	if level > 9:
+		count_of_fishes = 20
+	if level < 10:
 		player_scale = Util.size_to_scale[level - 1]
 		player.scale = player_scale
 	if level < 10:
 		chage_texture(level - 1)
 	audio_level_up.play()
 	level_label.text = "Уровень " + str(level)
+
+
+func _on_start_game_button_pressed() -> void:
+	# не работает клик
+	print("click")
+	game_is_started = true
+	start_game_button.visible = false
+	start_game()
+	

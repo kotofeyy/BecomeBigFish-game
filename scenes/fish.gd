@@ -6,7 +6,7 @@ const FISH_1 = preload("uid://bifkics7rlbos")
 const FISH_2 = preload("uid://dolbclvlvtwfk")
 const FISH_3 = preload("uid://bcqprvaq42nnw")
 
-var speed = 120
+var speed
 var direction
 var size_screen
 var fish_scale
@@ -14,8 +14,8 @@ var level = 1
 var fish_level = 1
 var level_to_scale = {
 	1: [Util.Size.EXTRA_SMALL, Util.Size.SMALL, Util.Size.MEDIUM],
-	2: [Util.Size.LARGE, Util.Size.EXTRA_LARGE, Util.Size.DOUBLE_LARGE],
-	3: [Util.Size.HUGE, Util.Size.GIANT, Util.Size.COLOSSAL]
+	2: [Util.Size.MEDIUM, Util.Size.LARGE, Util.Size.EXTRA_LARGE, Util.Size.DOUBLE_LARGE],
+	3: [Util.Size.DOUBLE_LARGE, Util.Size.HUGE, Util.Size.GIANT, Util.Size.COLOSSAL]
 }
 var level_to_texture = {
 	1: [0, 1 ,2],
@@ -26,6 +26,7 @@ var level_to_texture = {
 
 func _ready() -> void:
 	size_screen = get_window().get_visible_rect().size
+	speed = randi_range(100, 130) 
 	reset_spawn()
 
 
