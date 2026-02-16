@@ -9,8 +9,17 @@
 [ext_resource type="AudioStream" uid="uid://76j0pr8l3y4q" path="res://sounds/magic_game_win_success.wav" id="6_tefeu"]
 [ext_resource type="Texture2D" uid="uid://y1ew1qivwerl" path="res://sprites/konfetty.jpeg" id="7_o6xl0"]
 [ext_resource type="Script" uid="uid://clgllwsf8uycq" path="res://code/play_pause.gd" id="9_85g3d"]
+[ext_resource type="AudioStream" uid="uid://t8andxrkh4cm" path="res://sounds/wrong.wav" id="10_choun"]
+[ext_resource type="Texture2D" uid="uid://hoso7mk5ps7k" path="res://sprites/shield.png" id="11_ya4ey"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sugp2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ya4ey"]
+bg_color = Color(0.3254902, 0.6901961, 0.44313726, 0.41960785)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbgi4"]
 bg_color = Color(0.9340804, 0.9340805, 0.93408036, 1)
@@ -25,6 +34,9 @@ border_color = Color(0.2721296, 0.5416109, 0.3554557, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tipki"]
 bg_color = Color(0.35078898, 0.68169004, 0.47556067, 1)
 border_width_bottom = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_choun"]
+bg_color = Color(0.9372549, 0.4117647, 0.38039216, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tbgi4"]
 atlas = ExtResource("4_jyhfs")
@@ -73,6 +85,12 @@ animations = [{
 offsets = PackedFloat32Array(0, 0.99382716)
 colors = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 1)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_ya4ey"]
+radius = 17.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eb6dy"]
+radius = 17.0
+
 [node name="Main" type="Control" unique_id=1144979774]
 layout_mode = 3
 anchors_preset = 15
@@ -95,6 +113,22 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D" unique_id=461448838]
 scale = Vector2(0.755, 0.755)
 shape = SubResource("RectangleShape2D_sugp2")
+
+[node name="PlayerShield" type="Panel" parent="Player" unique_id=806329289]
+visible = false
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+pivot_offset = Vector2(20, 20)
+pivot_offset_ratio = Vector2(1, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_ya4ey")
+
+[node name="AudioLevelUp" type="AudioStreamPlayer" parent="." unique_id=1624180807]
+stream = ExtResource("6_tefeu")
+
+[node name="AudioWrong" type="AudioStreamPlayer" parent="." unique_id=608301632]
+stream = ExtResource("10_choun")
 
 [node name="AudioEat" type="AudioStreamPlayer" parent="." unique_id=1628618054]
 stream = ExtResource("3_sugp2")
@@ -157,17 +191,21 @@ show_percentage = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer" unique_id=1465449493]
+[node name="HeartControl" type="Control" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer" unique_id=2066293117]
+custom_minimum_size = Vector2(200, 32)
 layout_mode = 2
-texture = ExtResource("5_tipki")
+size_flags_horizontal = 4
+size_flags_vertical = 0
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer" unique_id=921575899]
-layout_mode = 2
-texture = ExtResource("5_tipki")
-
-[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer" unique_id=516343048]
-layout_mode = 2
-texture = ExtResource("5_tipki")
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer/HeartControl" unique_id=1512291238]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 2
 
 [node name="StartGameButton" type="Button" parent="CanvasLayer" unique_id=951879490]
 process_mode = 3
@@ -190,6 +228,23 @@ theme_override_font_sizes/font_size = 44
 theme_override_styles/normal = SubResource("StyleBoxFlat_tipki")
 text = "Начать игру"
 
+[node name="HeartSprite" type="TextureRect" parent="CanvasLayer" unique_id=1465449493]
+offset_left = -50.0
+offset_top = 6.5
+offset_right = -18.0
+offset_bottom = 38.5
+texture = ExtResource("5_tipki")
+
+[node name="WrongPanel" type="Panel" parent="CanvasLayer" unique_id=51766929]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_choun")
+
 [node name="AnimatedSpriteEat" type="AnimatedSprite2D" parent="." unique_id=1729697139]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_choun")
@@ -197,9 +252,6 @@ animation = &"eat"
 frame = 4
 frame_progress = 1.0
 speed_scale = 3.0
-
-[node name="AudioLevelUp" type="AudioStreamPlayer" parent="." unique_id=1624180807]
-stream = ExtResource("6_tefeu")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1929577164]
 position = Vector2(640, 92)
@@ -225,5 +277,35 @@ hue_variation_max = 1.0
 process_mode = 3
 script = ExtResource("9_85g3d")
 
+[node name="ShieldAbility" type="Sprite2D" parent="." unique_id=1185600944]
+position = Vector2(-50, 0)
+texture = ExtResource("11_ya4ey")
+
+[node name="Area2D" type="Area2D" parent="ShieldAbility" unique_id=616744845]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShieldAbility/Area2D" unique_id=1370227493]
+shape = SubResource("CircleShape2D_ya4ey")
+
+[node name="HeartAbility" type="Sprite2D" parent="." unique_id=1416518610]
+position = Vector2(-50, 0)
+texture = ExtResource("5_tipki")
+
+[node name="Area2D" type="Area2D" parent="HeartAbility" unique_id=124601771]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HeartAbility/Area2D" unique_id=1216544247]
+shape = SubResource("CircleShape2D_eb6dy")
+
+[node name="TimerForShield" type="Timer" parent="." unique_id=1957096352]
+wait_time = 15.0
+autostart = true
+
+[node name="TimerForHeart" type="Timer" parent="." unique_id=347540339]
+wait_time = 10.0
+autostart = true
+
 [connection signal="area_entered" from="Player/Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="pressed" from="CanvasLayer/StartGameButton" to="." method="_on_start_game_button_pressed"]
+[connection signal="timeout" from="TimerForShield" to="." method="_on_timer_for_shield_timeout"]
+[connection signal="timeout" from="TimerForHeart" to="." method="_on_timer_for_heart_timeout"]

@@ -1,11 +1,6 @@
 extends Sprite2D
 class_name Fish
 
-
-const FISH_1 = preload("uid://bifkics7rlbos")
-const FISH_2 = preload("uid://dolbclvlvtwfk")
-const FISH_3 = preload("uid://bcqprvaq42nnw")
-
 var speed
 var direction
 var size_screen
@@ -43,7 +38,6 @@ func _process(delta: float) -> void:
 		move_to_left(delta)
 	if direction == "right":
 		move_to_right(delta)
-	
 
 
 func _on_visible_on_screen_enabler_2d_screen_exited() -> void:
