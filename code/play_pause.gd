@@ -11,6 +11,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if get_tree().paused:
 			pause_play_rect.texture = PAUSE
 			pause_play_rect.visible = true
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 		else:
 			pause_play_rect.visible = false
+			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN

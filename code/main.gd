@@ -93,6 +93,7 @@ func _process(_delta: float) -> void:
 		# добавил немного вязкозти, для ощущения под водой
 		var weight = 0.1
 		player.global_position = player.global_position.lerp(get_global_mouse_position(), weight)
+		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
 
 func _unhandled_input(_event: InputEvent) -> void:
@@ -187,7 +188,7 @@ func on_heart_dropping() -> void:
 	var tween = get_tree().create_tween()
 	tween.tween_property(heart_ability, "position:y", size_screen.y + 100, 5.0)
 	tween.finished.connect(func(): 
-		heart_ability.position = Vector2(-100, 0))
+		heart_ability.position = Vector2(-200, 0))
 
 
 func on_shield_dropping() -> void:
@@ -195,7 +196,7 @@ func on_shield_dropping() -> void:
 	var tween = get_tree().create_tween()
 	tween.tween_property(shield_ability, "position:y", size_screen.y + 100, 5.0)
 	tween.finished.connect(func(): 
-		shield_ability.position = Vector2(-100, 0))
+		shield_ability.position = Vector2(-200, 0))
 
 
 func on_magnet_dropping() -> void:
@@ -203,7 +204,7 @@ func on_magnet_dropping() -> void:
 	var tween = get_tree().create_tween()
 	tween.tween_property(magnet_ability, "position:y", size_screen.y + 100, 5.0)
 	tween.finished.connect(func(): 
-		magnet_ability.position = Vector2(-100, 0))
+		magnet_ability.position = Vector2(-200, 0))
 
 
 func on_shield_enable() -> void:
@@ -252,6 +253,7 @@ func _on_timer_for_heart_timeout() -> void:
 func on_dead() -> void:
 	game_is_started = false
 	end_game_panel.visible = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	clear_fishes()
 	count_of_fish_label.text = "Рыбы съедено: " + str(score)
 

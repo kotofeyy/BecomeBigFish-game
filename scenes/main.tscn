@@ -366,7 +366,7 @@ process_mode = 3
 script = ExtResource("9_85g3d")
 
 [node name="ShieldAbility" type="Sprite2D" parent="." unique_id=1185600944]
-position = Vector2(-50, 0)
+position = Vector2(-200, 0)
 texture = ExtResource("11_ya4ey")
 
 [node name="Area2D" type="Area2D" parent="ShieldAbility" unique_id=616744845]
@@ -376,7 +376,7 @@ collision_layer = 2
 shape = SubResource("CircleShape2D_ya4ey")
 
 [node name="HeartAbility" type="Sprite2D" parent="." unique_id=1416518610]
-position = Vector2(-50, 0)
+position = Vector2(-200, 0)
 texture = ExtResource("5_tipki")
 
 [node name="Area2D" type="Area2D" parent="HeartAbility" unique_id=124601771]
@@ -386,7 +386,7 @@ collision_layer = 2
 shape = SubResource("CircleShape2D_eb6dy")
 
 [node name="MagnetAbility" type="Sprite2D" parent="." unique_id=1606177449]
-position = Vector2(-50, 0)
+position = Vector2(-200, 0)
 texture = ExtResource("13_trceg")
 
 [node name="Area2D" type="Area2D" parent="MagnetAbility" unique_id=886492809]

@@ -10,8 +10,8 @@ var fish_level = 1
 
 var level_to_scale = {
 	1: [Util.Size.EXTRA_SMALL, Util.Size.SMALL, Util.Size.MEDIUM],
-	2: [Util.Size.MEDIUM, Util.Size.LARGE, Util.Size.EXTRA_LARGE, Util.Size.DOUBLE_LARGE],
-	3: [Util.Size.DOUBLE_LARGE, Util.Size.HUGE, Util.Size.GIANT, Util.Size.COLOSSAL]
+	2: [Util.Size.SMALL, Util.Size.MEDIUM, Util.Size.LARGE, Util.Size.EXTRA_LARGE, Util.Size.DOUBLE_LARGE],
+	3: [Util.Size.EXTRA_LARGE, Util.Size.DOUBLE_LARGE, Util.Size.HUGE, Util.Size.GIANT, Util.Size.COLOSSAL]
 }
 var level_to_texture = {
 	1: [0, 1 ,2],
@@ -54,7 +54,6 @@ func reset_spawn() -> void:
 	if direction == "left":
 		chage_texture(level_to_texture[fish_level].pick_random())
 		position.x = 0
-		#level = randi_range(0, 2)
 		fish_scale = Util.size_to_scale[level_to_scale[fish_level].pick_random()]
 		scale = fish_scale
 		flip_h = true
@@ -62,7 +61,6 @@ func reset_spawn() -> void:
 	if direction == "right":
 		chage_texture(level_to_texture[fish_level].pick_random())
 		global_position.x = size_screen.x
-		#level = randi_range(0, 2)
 		fish_scale = Util.size_to_scale[level_to_scale[fish_level].pick_random()]
 		scale = fish_scale
 		flip_h = false
