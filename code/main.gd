@@ -8,17 +8,18 @@ extends Control
 @onready var cpu_particles_2d: CPUParticles2D = $CPUParticles2D
 @onready var wrong_panel: Panel = $CanvasLayer/WrongPanel
 @onready var player_shield: Panel = $Player/PlayerShield
-@onready var heart_control: Control = $CanvasLayer/Panel/MarginContainer/VBoxContainer/HeartControl/HBoxContainer
+@onready var heart_control: Control = $CanvasLayer/Header/MarginContainer/VBoxContainer/HeartControl/HBoxContainer
 @onready var heart_sprite: TextureRect = $CanvasLayer/HeartSprite
-@onready var fish_preload = preload("res://scenes/fish.tscn")
 @onready var shield_ability: Sprite2D = $ShieldAbility
 @onready var heart_ability: Sprite2D = $HeartAbility
-@onready var progress_bar: ProgressBar = $CanvasLayer/Panel/MarginContainer/VBoxContainer/ProgressBar
-@onready var level_label: Label = $CanvasLayer/Panel/MarginContainer/VBoxContainer/LevelLabel
+@onready var progress_bar: ProgressBar = $CanvasLayer/Header/MarginContainer/VBoxContainer/ProgressBar
+@onready var level_label: Label = $CanvasLayer/Header/MarginContainer/VBoxContainer/LevelLabel
 @onready var animated_sprite_eat: AnimatedSprite2D = $AnimatedSpriteEat
 @onready var start_game_button: Button = $CanvasLayer/StartGameButton
 @onready var end_game_panel: Panel = $CanvasLayer/EndGamePanel
 @onready var count_of_fish_label: Label = $CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer/CountOfFishLabel
+
+@onready var fish_preload = preload("res://scenes/fish.tscn")
 
 
 var has_game_started := false
@@ -141,8 +142,8 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 						heart -= 1
 						update_heart()
 						on_dead()
-		
-	
+
+
 func update_progress() -> void:
 	progress_bar.value = score
 
@@ -173,6 +174,7 @@ func _on_start_game_button_pressed() -> void:
 	game_is_started = true
 	start_game_button.visible = false
 	start_game()
+
 
 func on_heart_dropping() -> void:
 	heart_ability.position.x = randi_range(40, size_screen.x - 40)

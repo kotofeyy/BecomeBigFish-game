@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bcl21swdqovy0" path="res://sprites/heart.png" id="5_tipki"]
 [ext_resource type="AudioStream" uid="uid://76j0pr8l3y4q" path="res://sounds/magic_game_win_success.wav" id="6_tefeu"]
 [ext_resource type="Texture2D" uid="uid://y1ew1qivwerl" path="res://sprites/konfetty.jpeg" id="7_o6xl0"]
+[ext_resource type="Texture2D" uid="uid://btl0jyqibtmtu" path="res://sprites/pause.png" id="8_eb6dy"]
 [ext_resource type="Script" uid="uid://clgllwsf8uycq" path="res://code/play_pause.gd" id="9_85g3d"]
 [ext_resource type="AudioStream" uid="uid://t8andxrkh4cm" path="res://sounds/wrong.wav" id="10_choun"]
 [ext_resource type="Texture2D" uid="uid://hoso7mk5ps7k" path="res://sprites/shield.png" id="11_ya4ey"]
@@ -153,14 +154,14 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("4_tbgi4")
 
-[node name="Panel" type="Panel" parent="CanvasLayer" unique_id=1533811978]
+[node name="Header" type="Panel" parent="CanvasLayer" unique_id=1533811978]
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 0.062000003
 offset_bottom = 0.3599968
 grow_horizontal = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Panel" unique_id=1427725800]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Header" unique_id=1427725800]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -172,11 +173,11 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel/MarginContainer" unique_id=1341887099]
+[node name="VBoxContainer" type="HBoxContainer" parent="CanvasLayer/Header/MarginContainer" unique_id=1341887099]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer" unique_id=354665567]
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Header/MarginContainer/VBoxContainer" unique_id=354665567]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -190,17 +191,17 @@ max_value = 10.0
 step = 1.0
 show_percentage = false
 
-[node name="LevelLabel" type="Label" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer" unique_id=905797926]
+[node name="LevelLabel" type="Label" parent="CanvasLayer/Header/MarginContainer/VBoxContainer" unique_id=905797926]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HeartControl" type="Control" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer" unique_id=2066293117]
+[node name="HeartControl" type="Control" parent="CanvasLayer/Header/MarginContainer/VBoxContainer" unique_id=2066293117]
 custom_minimum_size = Vector2(200, 32)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel/MarginContainer/VBoxContainer/HeartControl" unique_id=1512291238]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Header/MarginContainer/VBoxContainer/HeartControl" unique_id=1512291238]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -249,6 +250,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_choun")
 
 [node name="EndGamePanel" type="Panel" parent="CanvasLayer" unique_id=1544777590]
+visible = false
 custom_minimum_size = Vector2(400, 300)
 anchors_preset = 8
 anchor_left = 0.5
@@ -303,6 +305,29 @@ text = "Да"
 layout_mode = 2
 size_flags_horizontal = 3
 text = "НЕТ"
+
+[node name="PausePlayRect" type="TextureRect" parent="CanvasLayer" unique_id=1189890305]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(32, 32)
+texture = ExtResource("8_eb6dy")
+
+[node name="ClueLabel" type="Label" parent="CanvasLayer" unique_id=717019683]
+offset_left = 10.0
+offset_top = 50.0
+offset_right = 217.0
+offset_bottom = 73.0
+text = "[Esc] - Поставить на паузу"
 
 [node name="AnimatedSpriteEat" type="AnimatedSprite2D" parent="." unique_id=1729697139]
 scale = Vector2(2, 2)
