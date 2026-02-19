@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://clgllwsf8uycq" path="res://code/play_pause.gd" id="9_85g3d"]
 [ext_resource type="AudioStream" uid="uid://t8andxrkh4cm" path="res://sounds/wrong.wav" id="10_choun"]
 [ext_resource type="Texture2D" uid="uid://hoso7mk5ps7k" path="res://sprites/shield.png" id="11_ya4ey"]
+[ext_resource type="Texture2D" uid="uid://ntwg8bsywljj" path="res://sprites/magnet.png" id="13_trceg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sugp2"]
 
@@ -95,6 +96,9 @@ radius = 17.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_eb6dy"]
 radius = 17.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a8y0u"]
+radius = 18.027756
 
 [node name="Main" type="Control" unique_id=1144979774]
 layout_mode = 3
@@ -380,6 +384,16 @@ collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HeartAbility/Area2D" unique_id=1216544247]
 shape = SubResource("CircleShape2D_eb6dy")
+
+[node name="MagnetAbility" type="Sprite2D" parent="." unique_id=1606177449]
+position = Vector2(-50, 0)
+texture = ExtResource("13_trceg")
+
+[node name="Area2D" type="Area2D" parent="MagnetAbility" unique_id=886492809]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MagnetAbility/Area2D" unique_id=941959998]
+shape = SubResource("CircleShape2D_a8y0u")
 
 [node name="TimerForShield" type="Timer" parent="." unique_id=1957096352]
 wait_time = 15.0

@@ -7,6 +7,7 @@ var size_screen
 var fish_scale
 var level = 1
 var fish_level = 1
+
 var level_to_scale = {
 	1: [Util.Size.EXTRA_SMALL, Util.Size.SMALL, Util.Size.MEDIUM],
 	2: [Util.Size.MEDIUM, Util.Size.LARGE, Util.Size.EXTRA_LARGE, Util.Size.DOUBLE_LARGE],

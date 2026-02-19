@@ -12,6 +12,7 @@ extends Control
 @onready var heart_sprite: TextureRect = $CanvasLayer/HeartSprite
 @onready var shield_ability: Sprite2D = $ShieldAbility
 @onready var heart_ability: Sprite2D = $HeartAbility
+@onready var magnet_ability: Sprite2D = $MagnetAbility
 @onready var progress_bar: ProgressBar = $CanvasLayer/Header/MarginContainer/VBoxContainer/ProgressBar
 @onready var level_label: Label = $CanvasLayer/Header/MarginContainer/VBoxContainer/LevelLabel
 @onready var animated_sprite_eat: AnimatedSprite2D = $AnimatedSpriteEat
@@ -29,10 +30,11 @@ var level = 1
 var heart = 3
 var max_value_of_progress_bar = 10
 var game_is_started = false
-var count_of_fishes = 15
+var count_of_fishes = 20
 var size_screen
 var center_of_screen
 var is_shield_enable = false
+
 
 func _ready() -> void:
 	size_screen = get_window().get_visible_rect().size
@@ -125,6 +127,10 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		audio_eat.play()
 		heart_ability.position = Vector2(-100, 0)
 		on_heart_enable()
+	if parent.name == "MagnetAbility":
+		audio_eat.play()
+		magnet_ability.position = Vector2(-100, 0)
+		on_magnet_enable()
 	else:
 		if parent is Fish:
 			if player_scale >= parent.fish_scale:
@@ -192,6 +198,14 @@ func on_shield_dropping() -> void:
 		shield_ability.position = Vector2(-100, 0))
 
 
+func on_magnet_dropping() -> void:
+	magnet_ability.position.x = randi_range(40, size_screen.x - 40)
+	var tween = get_tree().create_tween()
+	tween.tween_property(magnet_ability, "position:y", size_screen.y + 100, 5.0)
+	tween.finished.connect(func(): 
+		magnet_ability.position = Vector2(-100, 0))
+
+
 func on_shield_enable() -> void:
 	is_shield_enable = true
 	player_shield.visible = true
@@ -206,6 +220,15 @@ func on_heart_enable() -> void:
 	update_heart()
 
 
+func on_magnet_enable() -> void:
+	var children = fishes.get_children()
+	for fish: Fish in children:
+		if fish.fish_scale <= player_scale:
+			on_shield_enable()
+			var tween = get_tree().create_tween()
+			tween.tween_property(fish, "position", player.position, 0.5)
+
+
 func update_heart() -> void:
 	var children = heart_control.get_children()
 	for child in children:
@@ -218,6 +241,7 @@ func update_heart() -> void:
 func _on_timer_for_shield_timeout() -> void:
 	if game_is_started:
 		on_shield_dropping()
+		on_magnet_dropping()
 
 
 func _on_timer_for_heart_timeout() -> void:
