@@ -19,6 +19,7 @@ extends Control
 @onready var start_game_button: Button = $CanvasLayer/StartGameButton
 @onready var end_game_panel: Panel = $CanvasLayer/EndGamePanel
 @onready var count_of_fish_label: Label = $CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer/CountOfFishLabel
+@onready var clue_label: Label = $CanvasLayer/ClueLabel
 
 @onready var fish_preload = preload("res://scenes/fish.tscn")
 
@@ -37,6 +38,7 @@ var is_shield_enable = false
 
 
 func _ready() -> void:
+	clue_label.text = "KEY_PAUSE"
 	size_screen = get_window().get_visible_rect().size
 	center_of_screen = size_screen / 2
 
@@ -55,7 +57,7 @@ func start_game() -> void:
 	player.scale = player_scale
 	clear_fishes()
 	spawn_fishes()
-	level_label.text = "Уровень " + str(level)
+	level_label.text = tr("KEY_LEVEL") + " " + str(level)
 
 
 func clear_fishes() -> void:
@@ -255,7 +257,7 @@ func on_dead() -> void:
 	end_game_panel.visible = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	clear_fishes()
-	count_of_fish_label.text = "Рыбы съедено: " + str(score)
+	count_of_fish_label.text = tr("KEY_FISH_EATEN") + ": " + str(score)
 
 
 func _on_restart_button_pressed() -> void:

@@ -198,6 +198,7 @@ show_percentage = false
 [node name="LevelLabel" type="Label" parent="CanvasLayer/Header/MarginContainer/VBoxContainer" unique_id=905797926]
 layout_mode = 2
 size_flags_horizontal = 3
+text = "KEY_LEVEL"
 
 [node name="HeartControl" type="Control" parent="CanvasLayer/Header/MarginContainer/VBoxContainer" unique_id=2066293117]
 custom_minimum_size = Vector2(200, 32)
@@ -234,7 +235,7 @@ mouse_filter = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 44
 theme_override_styles/normal = SubResource("StyleBoxFlat_tipki")
-text = "Начать игру"
+text = "KEY_START"
 
 [node name="HeartSprite" type="TextureRect" parent="CanvasLayer" unique_id=1465449493]
 offset_left = -50.0
@@ -288,13 +289,13 @@ theme_override_constants/separation = 70
 [node name="CountOfFishLabel" type="Label" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer" unique_id=32734393]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "Рыбы съедено: 123"
+text = "KEY_FISH_EATEN"
 horizontal_alignment = 1
 
 [node name="AgainLabel" type="Label" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer" unique_id=1611567541]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "Заново?"
+text = "KEY_RELOAD"
 horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer" unique_id=1060874092]
@@ -303,12 +304,12 @@ layout_mode = 2
 [node name="RestartButton" type="Button" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1452430027]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Да"
+text = "KEY_YES"
 
 [node name="CancelButton" type="Button" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1186989350]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "НЕТ"
+text = "KEY_NO"
 
 [node name="PausePlayRect" type="TextureRect" parent="CanvasLayer" unique_id=1189890305]
 visible = false
@@ -331,7 +332,7 @@ offset_left = 10.0
 offset_top = 50.0
 offset_right = 217.0
 offset_bottom = 73.0
-text = "[Esc] - Поставить на паузу"
+text = "[P] - Поставить на паузу"
 
 [node name="AnimatedSpriteEat" type="AnimatedSprite2D" parent="." unique_id=1729697139]
 scale = Vector2(2, 2)

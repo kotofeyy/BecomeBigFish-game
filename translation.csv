@@ -1,0 +1,8 @@
+id,en,ru
+KEY_START,Start game,Начать игру
+KEY_LEVEL,Level,Уровень
+KEY_PAUSE,[P] - Pause,[P] - Поставить на паузу
+KEY_FISH_EATEN,fish eaten,Рыбы съедено
+KEY_RELOAD,Start again?,Заново?
+KEY_YES,Yes,Да
+KEY_NO,No,Нет
