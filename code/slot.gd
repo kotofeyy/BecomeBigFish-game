@@ -22,7 +22,7 @@ func _ready() -> void:
 	if not available:
 		cost_label.text = str(cost)
 	else:
-		cost_label.text = "Доступен"
+		cost_label.text = tr("KEY_AVAILABLE")
 	
 	var material: ShaderMaterial = sprite_2d.material.duplicate()
 	if type == "color":
@@ -37,8 +37,6 @@ func _ready() -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and Input.is_action_pressed("mouse_action"):
-		print("all scores - ", all_scores)
-		print("cost - ", cost)
 		var can_buy
 		can_buy = all_scores >= cost 
 		emit_signal("on_click", skin, can_buy)
@@ -50,7 +48,6 @@ func select(s: Skins.Type) -> void:
 	else:
 		if selected_slot:
 			if s == skin:
-				print("skin - ", s)
 				add_theme_stylebox_override("panel", selected_slot)
 				grab_focus()
 

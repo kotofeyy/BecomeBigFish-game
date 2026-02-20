@@ -12,6 +12,24 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0oy0p"]
+bg_color = Color(0, 0.5686275, 0.43529412, 1)
+border_width_bottom = 4
+border_color = Color(2.695322e-06, 0.78129715, 0.60249454, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mwtbl"]
+bg_color = Color(0.7372549, 0.1882353, 0.4509804, 1)
+border_width_bottom = 4
+border_color = Color(0.93317384, 0.42782852, 0.6383777, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [node name="EndGamePanel" type="Panel" unique_id=618119165]
 visible = false
 custom_minimum_size = Vector2(400, 300)
@@ -43,7 +61,7 @@ theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1679403737]
 layout_mode = 2
-theme_override_constants/separation = 49
+theme_override_constants/separation = 44
 
 [node name="CountOfFishLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=59347028]
 layout_mode = 2
@@ -72,11 +90,21 @@ layout_mode = 2
 [node name="RestartButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=634570324]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_0oy0p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_0oy0p")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0oy0p")
 text = "KEY_YES"
 
 [node name="CancelButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=50676959]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_mwtbl")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_mwtbl")
+theme_override_styles/hover = SubResource("StyleBoxFlat_mwtbl")
 text = "KEY_NO"
 
 [node name="AudioEndGameScore" type="AudioStreamPlayer" parent="." unique_id=1495391069]

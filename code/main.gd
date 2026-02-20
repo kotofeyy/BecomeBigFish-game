@@ -12,22 +12,22 @@ extends Control
 @onready var player_shield: Panel = $Player/PlayerShield
 @onready var heart_control: Control = $CanvasLayer/Header/MarginContainer/VBoxContainer/HeartControl/HBoxContainer
 @onready var heart_sprite: TextureRect = $CanvasLayer/HeartSprite
+
 @onready var shield_ability: Sprite2D = $ShieldAbility
 @onready var heart_ability: Sprite2D = $HeartAbility
 @onready var magnet_ability: Sprite2D = $MagnetAbility
+
 @onready var progress_bar: ProgressBar = $CanvasLayer/Header/MarginContainer/VBoxContainer/ProgressBar
 @onready var level_label: Label = $CanvasLayer/Header/MarginContainer/VBoxContainer/LevelLabel
 @onready var animated_sprite_eat: AnimatedSprite2D = $AnimatedSpriteEat
 @onready var start_game_button: Button = $CanvasLayer/StartGameButton
 @onready var clue_label: Label = $CanvasLayer/ClueLabel
 
-@onready var fish_preload = preload("res://scenes/fish.tscn")
-
 @onready var skin_button: Button = $CanvasLayer/SkinButton
-
 @onready var end_game_panel: EndGamePanel = $CanvasLayer/EndGamePanel
 @onready var shop_panel: ShopPanel = $CanvasLayer/ShopPanel
 
+@onready var fish_preload = preload("res://scenes/fish.tscn")
 
 
 
@@ -47,9 +47,12 @@ var all_scores := 0
 
 
 func _ready() -> void:
+	Bridge.platform.send_message("game_ready")
+	TranslationServer.set_locale(Bridge.platform.language)
 	clue_label.text = "KEY_PAUSE"
 	size_screen = get_window().get_visible_rect().size
 	center_of_screen = size_screen / 2
+	
 	shop_panel.available_skins = available_skins
 	shop_panel.current_skin = current_skin
 	shop_panel.all_scores = all_scores
@@ -58,13 +61,15 @@ func _ready() -> void:
 		all_scores = _all_scores
 		available_skins = _available_skins
 		player_change_skin()
-		print(_current_skin, _available_skins, _all_scores))
+		save_data()
+		)
 	
 	end_game_panel.on_restart.connect(_on_restart_button_pressed)
 	end_game_panel.on_cancel.connect(_on_cancel_button_pressed)
 	end_game_panel.update_scores.connect(func(_all_scores):
 		all_scores = _all_scores
 		shop_panel.all_scores = all_scores
+		save_data()
 		)
 
 
@@ -72,6 +77,7 @@ func start_game() -> void:
 	get_tree().paused = false
 	skin_button.visible = false
 	# здесь подтянуть с сервера
+	get_data()
 	score = 0
 	level = 1
 	heart = 3
@@ -319,3 +325,36 @@ func player_change_skin() -> void:
 		player_material.set_shader_parameter("is_rainbow", true)
 	
 	player.material = player_material
+
+
+func save_data() -> void:
+	if Bridge.storage.is_supported("platform_internal"):
+		if Bridge.storage.is_available("platform_internal"):
+			Bridge.storage.set(["all_scores", "available_skins"], [all_scores, available_skins], Callable(self, "_on_storage_set_completed"))
+
+
+func _on_storage_set_completed(success) -> void:
+	if success:
+		print("Данные успешно сохранены")
+	else:
+		print("Ошибка сохранения")
+
+
+func get_data() -> void:
+	if Bridge.storage.is_supported("platform_internal"):
+		if Bridge.storage.is_available("platform_internal"):
+			Bridge.storage.get(["all_scores", "available_skins"], Callable(self, "_on_storage_get_completed"))
+
+
+func _on_storage_get_completed(success, data) -> void:
+	if success:
+		if data[0] != null: all_scores = data[0]
+		if data[1] != null: available_skins = data[1]
+		else:
+			current_skin = Skins.Type.DEFAULT
+			all_scores = 0
+			available_skins = 1
+	else:
+		current_skin = Skins.Type.DEFAULT
+		all_scores = 0
+		available_skins = 1
