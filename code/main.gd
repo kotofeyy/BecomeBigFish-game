@@ -2,9 +2,11 @@ extends Control
 
 @onready var player: Sprite2D = $Player
 @onready var fishes: Node2D = $Fishes
+
 @onready var audio_eat: AudioStreamPlayer = $AudioEat
 @onready var audio_level_up: AudioStreamPlayer = $AudioLevelUp
 @onready var audio_wrong: AudioStreamPlayer = $AudioWrong
+
 @onready var cpu_particles_2d: CPUParticles2D = $CPUParticles2D
 @onready var wrong_panel: Panel = $CanvasLayer/WrongPanel
 @onready var player_shield: Panel = $Player/PlayerShield
@@ -17,20 +19,18 @@ extends Control
 @onready var level_label: Label = $CanvasLayer/Header/MarginContainer/VBoxContainer/LevelLabel
 @onready var animated_sprite_eat: AnimatedSprite2D = $AnimatedSpriteEat
 @onready var start_game_button: Button = $CanvasLayer/StartGameButton
-@onready var end_game_panel: Panel = $CanvasLayer/EndGamePanel
-@onready var count_of_fish_label: Label = $CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer/CountOfFishLabel
 @onready var clue_label: Label = $CanvasLayer/ClueLabel
 
 @onready var fish_preload = preload("res://scenes/fish.tscn")
 
-@onready var slot_preload = preload("uid://dnm2kegprv65j")
-@onready var shop_panel: Panel = $CanvasLayer/ShopPanel
-@onready var shop_list: VBoxContainer = $CanvasLayer/ShopPanel/MarginContainer/ScrollContainer/VBoxContainer
 @onready var skin_button: Button = $CanvasLayer/SkinButton
-@onready var all_scores_label: Label = $CanvasLayer/ShopPanel/AllScoresLabel
+
+@onready var end_game_panel: EndGamePanel = $CanvasLayer/EndGamePanel
+@onready var shop_panel: ShopPanel = $CanvasLayer/ShopPanel
 
 
-var has_game_started := false
+
+
 var player_scale
 var score = 0
 var level = 1
@@ -43,20 +43,35 @@ var center_of_screen
 var is_shield_enable = false
 var available_skins := 1
 var current_skin := Skins.Type.DEFAULT
-var all_scores = 100
+var all_scores := 0
 
 
 func _ready() -> void:
 	clue_label.text = "KEY_PAUSE"
 	size_screen = get_window().get_visible_rect().size
 	center_of_screen = size_screen / 2
-	shop_update()
-	all_scores_label.text = "Всего очков: " + str(all_scores)
+	shop_panel.available_skins = available_skins
+	shop_panel.current_skin = current_skin
+	shop_panel.all_scores = all_scores
+	shop_panel.select_skin.connect(func(_current_skin, _available_skins, _all_scores):
+		current_skin = _current_skin
+		all_scores = _all_scores
+		available_skins = _available_skins
+		player_change_skin()
+		print(_current_skin, _available_skins, _all_scores))
+	
+	end_game_panel.on_restart.connect(_on_restart_button_pressed)
+	end_game_panel.on_cancel.connect(_on_cancel_button_pressed)
+	end_game_panel.update_scores.connect(func(_all_scores):
+		all_scores = _all_scores
+		shop_panel.all_scores = all_scores
+		)
 
 
 func start_game() -> void:
 	get_tree().paused = false
 	skin_button.visible = false
+	# здесь подтянуть с сервера
 	score = 0
 	level = 1
 	heart = 3
@@ -68,9 +83,9 @@ func start_game() -> void:
 	progress_bar.value = score
 	player_scale = Util.size_to_scale[level - 1]
 	player.scale = player_scale
+	level_label.text = tr("KEY_LEVEL") + " " + str(level)
 	clear_fishes()
 	spawn_fishes()
-	level_label.text = tr("KEY_LEVEL") + " " + str(level)
 
 
 func clear_fishes() -> void:
@@ -263,85 +278,44 @@ func _on_timer_for_heart_timeout() -> void:
 
 
 func on_dead() -> void:
+	player.position = Vector2(-100, -100)
+	level_label.text = ""
 	game_is_started = false
-	end_game_panel.visible = true
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	clear_fishes()
-	count_of_fish_label.text = tr("KEY_FISH_EATEN") + ": " + str(score)
+	end_game_panel.score = score
+	end_game_panel.all_scores = all_scores
+	end_game_panel.show_self()
+	
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
 
 
 func _on_restart_button_pressed() -> void:
 	game_is_started = true
-	end_game_panel.visible = false
+	end_game_panel.show_self()
 	start_game()
 
 
 func _on_cancel_button_pressed() -> void:
 	clear_fishes()
 	start_game_button.visible = true
-	end_game_panel.visible = false
+	end_game_panel.show_self()
 	game_is_started = false
 	skin_button.visible = true
 
 
 func _on_skin_button_pressed() -> void:
-	shop_panel.visible = true
-	_set_current_selected()
-	shop_update()
-
-
-func _set_current_selected() -> void:
-	var childs = shop_list.get_children()
-	
-	for child: Slot in childs:
-		child.select(current_skin)
-
-
-func unlock_skin(skin_value: int):
-	available_skins = available_skins | skin_value
-
-
-func has_skin(skin_value: int) -> bool:
-	return (available_skins & skin_value) != 0
-
-
-func shop_update() -> void:
-	var children = shop_list.get_children()
-	for child in children:
-		child.queue_free()
-
-	for s in Skins.List:
-		var slot: Slot = slot_preload.instantiate()
-		slot.skin = s
-		slot.cost =  Skins.List[s]["cost"]
-		slot.all_scores = all_scores
-		slot.available = has_skin(Skins.TypeToBit[s])
-		slot.type = Skins.List[s]["type"]
-		slot.replace_color = Skins.List[s]["color"]
-		slot.on_click.connect(func(skin, can_buy):
-			if can_buy and not has_skin(Skins.TypeToBit[skin]): 
-				unlock_skin(Skins.TypeToBit[skin])
-				all_scores = all_scores - int(Skins.List[skin]["cost"])
-				all_scores_label.text = "Всего очков: " + str(all_scores)
-				#save_data()
-			if has_skin(Skins.TypeToBit[skin]):
-				slot.select(skin)
-				shop_panel.visible = false
-				current_skin = skin
-				player_change_skin()
-				#icon.animation = str(skin)
-		)
-		shop_list.add_child(slot)
-		slot.select(current_skin)
+	shop_panel.show_self()
 
 
 func player_change_skin() -> void:
-	var material: ShaderMaterial = player.material.duplicate()
+	var player_material: ShaderMaterial = player.material.duplicate()
+	
 	if Skins.List[current_skin]["type"] == "color":
-		material.set_shader_parameter("replace_color", Skins.List[current_skin]["color"])
-		material.set_shader_parameter("is_rainbow", false)
+		player_material.set_shader_parameter("replace_color", Skins.List[current_skin]["color"])
+		player_material.set_shader_parameter("is_rainbow", false)
 	if Skins.List[current_skin]["type"] == "rainbow":
 		
-		material.set_shader_parameter("is_rainbow", true)
+		player_material.set_shader_parameter("is_rainbow", true)
 	
-	player.material = material
+	player.material = player_material

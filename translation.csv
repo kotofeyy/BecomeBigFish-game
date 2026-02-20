@@ -6,3 +6,5 @@ KEY_FISH_EATEN,fish eaten,Рыбы съедено
 KEY_RELOAD,Start again?,Заново?
 KEY_YES,Yes,Да
 KEY_NO,No,Нет
+KEY_SCORE,Scores,Очки
+KEY_SKIN,Skin,Внешность

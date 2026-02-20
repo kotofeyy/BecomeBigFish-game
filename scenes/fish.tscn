@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://di8mjm58dd23k"]
 
 [ext_resource type="Texture2D" uid="uid://cyskeytkcmv82" path="res://sprites/FishSheet.png" id="1_8g0i4"]
-[ext_resource type="Script" uid="uid://btrwo2j3sqyuy" path="res://scenes/fish.gd" id="1_n6yr6"]
+[ext_resource type="Script" uid="uid://btrwo2j3sqyuy" path="res://code/fish.gd" id="1_n6yr6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8g0i4"]
 size = Vector2(81.33757, 81.33757)

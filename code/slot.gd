@@ -37,6 +37,8 @@ func _ready() -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and Input.is_action_pressed("mouse_action"):
+		print("all scores - ", all_scores)
+		print("cost - ", cost)
 		var can_buy
 		can_buy = all_scores >= cost 
 		emit_signal("on_click", skin, can_buy)
@@ -45,10 +47,8 @@ func _on_gui_input(event: InputEvent) -> void:
 func select(s: Skins.Type) -> void:
 	if not available:
 		focus_mode = Control.FOCUS_NONE
-		print("not aviable")
 	else:
 		if selected_slot:
-			print("slot if")
 			if s == skin:
 				print("skin - ", s)
 				add_theme_stylebox_override("panel", selected_slot)

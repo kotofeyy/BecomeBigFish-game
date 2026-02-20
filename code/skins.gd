@@ -9,7 +9,6 @@ enum Type {
 	BLUE, 
 	RAINBOW
 	}
-enum TypeCost { COIN, SCORE, DONAT }
 
 const TypeToBit = {
 	Type.DEFAULT: 1,

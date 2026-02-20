@@ -12,6 +12,8 @@
 [ext_resource type="Script" uid="uid://clgllwsf8uycq" path="res://code/play_pause.gd" id="9_85g3d"]
 [ext_resource type="AudioStream" uid="uid://t8andxrkh4cm" path="res://sounds/wrong.wav" id="10_choun"]
 [ext_resource type="Shader" uid="uid://crbtbdnotjo8v" path="res://shaders/rainbow.gdshader" id="10_jkv2x"]
+[ext_resource type="PackedScene" uid="uid://b1630hxljapei" path="res://scenes/end_game_panel.tscn" id="10_muem4"]
+[ext_resource type="PackedScene" uid="uid://coaeetyenqmg6" path="res://scenes/shop_panel.tscn" id="11_jbj1t"]
 [ext_resource type="Texture2D" uid="uid://hoso7mk5ps7k" path="res://sprites/shield.png" id="11_ya4ey"]
 [ext_resource type="Texture2D" uid="uid://ntwg8bsywljj" path="res://sprites/magnet.png" id="13_trceg"]
 
@@ -54,19 +56,10 @@ corner_radius_bottom_left = 10
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_choun"]
 bg_color = Color(0.9372549, 0.4117647, 0.38039216, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jkv2x"]
-bg_color = Color(1, 1, 1, 1)
-border_width_bottom = 10
-border_color = Color(0.7539839, 0.75398386, 0.75398386, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jbj1t"]
 shader = ExtResource("10_jkv2x")
 shader_parameter/is_active = true
-shader_parameter/is_rainbow = false
+shader_parameter/is_rainbow = true
 shader_parameter/speed = 1.0
 shader_parameter/precision = 0.05
 shader_parameter/replace_color = Color(0, 0.61090577, 0.6255284, 1)
@@ -227,7 +220,6 @@ show_percentage = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 30
-text = "KEY_LEVEL"
 
 [node name="HeartControl" type="Control" parent="CanvasLayer/Header/MarginContainer/VBoxContainer" unique_id=2066293117]
 custom_minimum_size = Vector2(200, 32)
@@ -286,62 +278,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_choun")
 
-[node name="EndGamePanel" type="Panel" parent="CanvasLayer" unique_id=1544777590]
-visible = false
-custom_minimum_size = Vector2(400, 300)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_jkv2x")
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/EndGamePanel" unique_id=1676105238]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 20
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/EndGamePanel/MarginContainer" unique_id=722202580]
-layout_mode = 2
-theme_override_constants/separation = 70
-
-[node name="CountOfFishLabel" type="Label" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer" unique_id=32734393]
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "KEY_FISH_EATEN"
-horizontal_alignment = 1
-
-[node name="AgainLabel" type="Label" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer" unique_id=1611567541]
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "KEY_RELOAD"
-horizontal_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer" unique_id=1060874092]
-layout_mode = 2
-
-[node name="RestartButton" type="Button" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1452430027]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "KEY_YES"
-
-[node name="CancelButton" type="Button" parent="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1186989350]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "KEY_NO"
+[node name="EndGamePanel" parent="CanvasLayer" unique_id=618119165 instance=ExtResource("10_muem4")]
 
 [node name="PausePlayRect" type="TextureRect" parent="CanvasLayer" unique_id=1189890305]
 visible = false
@@ -382,7 +319,7 @@ grow_vertical = 2
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 40
-text = "Внешность"
+text = "KEY_SKIN"
 flat = true
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/SkinButton" unique_id=457872326]
@@ -393,58 +330,8 @@ texture = ExtResource("2_sugp2")
 region_enabled = true
 region_rect = Rect2(0, 0, 16, 16)
 
-[node name="ShopPanel" type="Panel" parent="CanvasLayer" unique_id=653394080]
+[node name="ShopPanel" parent="CanvasLayer" unique_id=1305449297 instance=ExtResource("11_jbj1t")]
 visible = false
-custom_minimum_size = Vector2(400, 500)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_jkv2x")
-
-[node name="AllScoresLabel" type="Label" parent="CanvasLayer/ShopPanel" unique_id=234092972]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -185.0
-offset_right = 185.0
-offset_bottom = 33.0
-grow_horizontal = 2
-size_flags_vertical = 0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-text = "ВСЕГО ОЧКОВ: 1424"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ShopPanel" unique_id=1021307725]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 40
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
-
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/ShopPanel/MarginContainer" unique_id=259313211]
-layout_mode = 2
-horizontal_scroll_mode = 0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ShopPanel/MarginContainer/ScrollContainer" unique_id=874656809]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 
 [node name="AnimatedSpriteEat" type="AnimatedSprite2D" parent="." unique_id=1729697139]
 scale = Vector2(2, 2)
@@ -518,8 +405,6 @@ autostart = true
 
 [connection signal="area_entered" from="Player/Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="pressed" from="CanvasLayer/StartGameButton" to="." method="_on_start_game_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer/HBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/EndGamePanel/MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/SkinButton" to="." method="_on_skin_button_pressed"]
 [connection signal="timeout" from="TimerForShield" to="." method="_on_timer_for_shield_timeout"]
 [connection signal="timeout" from="TimerForHeart" to="." method="_on_timer_for_heart_timeout"]
