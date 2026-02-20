@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://ba8rmkx2daie"]
+
+[ext_resource type="Texture2D" uid="uid://cyskeytkcmv82" path="res://sprites/FishSheet.png" id="1_5lic5"]
+[ext_resource type="Script" uid="uid://c24u7uk0j7px5" path="res://code/big_fish.gd" id="2_me2ul"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_me2ul"]
+radius = 8.714285
+
+[node name="BigFish" type="Sprite2D" unique_id=116966706]
+scale = Vector2(7, 7)
+texture = ExtResource("1_5lic5")
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 15)
+script = ExtResource("2_me2ul")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=376056112]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1774654879]
+shape = SubResource("CircleShape2D_me2ul")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=2101519749]
+rect = Rect2(-8.815, -9, 17.605, 18)
+
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]

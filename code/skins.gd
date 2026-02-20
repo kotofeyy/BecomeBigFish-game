@@ -25,22 +25,22 @@ const List: Dictionary[Type, Dictionary] = {
 		"color": Color.BLACK,
 	},
 	Type.RED: {
-		"cost": 5,
+		"cost": 100,
 		"type": "color",
 		"color": Color.RED,
 	},
 	Type.GREEN: {
-		"cost": 50,
+		"cost": 200,
 		"type": "color",
 		"color": Color.GREEN,
 	},
 	Type.BLUE: {
-		"cost": 5,
+		"cost": 500,
 		"type": "color",
 		"color": Color.BLUE,
 	},
 	Type.RAINBOW: {
-		"cost": 10,
+		"cost": 1500,
 		"type": "rainbow",
 		"color": Color.TRANSPARENT,
 	},

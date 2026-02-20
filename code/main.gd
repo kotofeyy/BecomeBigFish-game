@@ -27,6 +27,9 @@ extends Control
 @onready var end_game_panel: EndGamePanel = $CanvasLayer/EndGamePanel
 @onready var shop_panel: ShopPanel = $CanvasLayer/ShopPanel
 
+@onready var big_fish: BigFish = $BigFish
+
+
 @onready var fish_preload = preload("res://scenes/fish.tscn")
 
 
@@ -92,6 +95,7 @@ func start_game() -> void:
 	level_label.text = tr("KEY_LEVEL") + " " + str(level)
 	clear_fishes()
 	spawn_fishes()
+	big_fish.spawn()
 
 
 func clear_fishes() -> void:
@@ -178,6 +182,16 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 						heart -= 1
 						update_heart()
 						on_dead()
+		if parent is BigFish:
+			if not is_shield_enable:
+				audio_wrong.play()
+				if heart > 1:
+					heart -= 1
+					update_heart()
+				else:
+					heart -= 1
+					update_heart()
+					on_dead()
 
 
 func update_progress() -> void:
@@ -288,12 +302,12 @@ func on_dead() -> void:
 	level_label.text = ""
 	game_is_started = false
 	clear_fishes()
+	big_fish.stop_swim()
 	end_game_panel.score = score
 	end_game_panel.all_scores = all_scores
 	end_game_panel.show_self()
 	
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	
 
 
 func _on_restart_button_pressed() -> void:
