@@ -23,6 +23,12 @@ extends Control
 
 @onready var fish_preload = preload("res://scenes/fish.tscn")
 
+@onready var slot_preload = preload("uid://dnm2kegprv65j")
+@onready var shop_panel: Panel = $CanvasLayer/ShopPanel
+@onready var shop_list: VBoxContainer = $CanvasLayer/ShopPanel/MarginContainer/ScrollContainer/VBoxContainer
+@onready var skin_button: Button = $CanvasLayer/SkinButton
+@onready var all_scores_label: Label = $CanvasLayer/ShopPanel/AllScoresLabel
+
 
 var has_game_started := false
 var player_scale
@@ -35,21 +41,28 @@ var count_of_fishes = 20
 var size_screen
 var center_of_screen
 var is_shield_enable = false
+var available_skins := 1
+var current_skin := Skins.Type.DEFAULT
+var all_scores = 100
 
 
 func _ready() -> void:
 	clue_label.text = "KEY_PAUSE"
 	size_screen = get_window().get_visible_rect().size
 	center_of_screen = size_screen / 2
+	shop_update()
+	all_scores_label.text = "Всего очков: " + str(all_scores)
 
 
 func start_game() -> void:
 	get_tree().paused = false
+	skin_button.visible = false
 	score = 0
 	level = 1
 	heart = 3
 	update_heart()
-	chage_texture(level - 1)
+	change_texture(level - 1)
+	player_change_skin()
 	progress_bar.max_value = level * 10
 	progress_bar.min_value = score
 	progress_bar.value = score
@@ -72,13 +85,6 @@ func spawn_fishes() -> void:
 		fish.level = level
 		fishes.add_child(fish)
 		await get_tree().create_timer(0.3).timeout
-
-
-func fish_level_update() -> void:
-	var children = fishes.get_children()
-	for fish: Fish in children:
-		fish.level = level
-		fish.reset_spawn()
 
 
 func _process(_delta: float) -> void:
@@ -137,7 +143,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	else:
 		if parent is Fish:
 			if player_scale >= parent.fish_scale:
-				on_eat_fish(parent.position)
+				on_eat_fish(parent.global_position)
 				parent.reset_spawn()
 			else:
 				if not is_shield_enable:
@@ -157,7 +163,7 @@ func update_progress() -> void:
 	progress_bar.value = score
 
 
-func chage_texture(index: int) -> void:
+func change_texture(index: int) -> void:
 	var tile_size = 16
 	var x = (index % 3) * tile_size
 	var y = (index / 3) * tile_size
@@ -168,13 +174,17 @@ func chage_texture(index: int) -> void:
 func level_up() -> void:
 	level += 1
 	cpu_particles_2d.restart()
+	if level > 6:
+		scale = Vector2(0.8, 0.8)
+	if level > 8:
+		scale = Vector2(0.7, 0.7)
 	if level > 9:
 		count_of_fishes = 20
 	if level < 10:
 		player_scale = Util.size_to_scale[level - 1]
 		player.scale = player_scale
 	if level < 10:
-		chage_texture(level - 1)
+		change_texture(level - 1)
 	audio_level_up.play()
 	level_label.text = "Уровень " + str(level)
 
@@ -271,4 +281,67 @@ func _on_cancel_button_pressed() -> void:
 	start_game_button.visible = true
 	end_game_panel.visible = false
 	game_is_started = false
+	skin_button.visible = true
+
+
+func _on_skin_button_pressed() -> void:
+	shop_panel.visible = true
+	_set_current_selected()
+	shop_update()
+
+
+func _set_current_selected() -> void:
+	var childs = shop_list.get_children()
 	
+	for child: Slot in childs:
+		child.select(current_skin)
+
+
+func unlock_skin(skin_value: int):
+	available_skins = available_skins | skin_value
+
+
+func has_skin(skin_value: int) -> bool:
+	return (available_skins & skin_value) != 0
+
+
+func shop_update() -> void:
+	var children = shop_list.get_children()
+	for child in children:
+		child.queue_free()
+
+	for s in Skins.List:
+		var slot: Slot = slot_preload.instantiate()
+		slot.skin = s
+		slot.cost =  Skins.List[s]["cost"]
+		slot.all_scores = all_scores
+		slot.available = has_skin(Skins.TypeToBit[s])
+		slot.type = Skins.List[s]["type"]
+		slot.replace_color = Skins.List[s]["color"]
+		slot.on_click.connect(func(skin, can_buy):
+			if can_buy and not has_skin(Skins.TypeToBit[skin]): 
+				unlock_skin(Skins.TypeToBit[skin])
+				all_scores = all_scores - int(Skins.List[skin]["cost"])
+				all_scores_label.text = "Всего очков: " + str(all_scores)
+				#save_data()
+			if has_skin(Skins.TypeToBit[skin]):
+				slot.select(skin)
+				shop_panel.visible = false
+				current_skin = skin
+				player_change_skin()
+				#icon.animation = str(skin)
+		)
+		shop_list.add_child(slot)
+		slot.select(current_skin)
+
+
+func player_change_skin() -> void:
+	var material: ShaderMaterial = player.material.duplicate()
+	if Skins.List[current_skin]["type"] == "color":
+		material.set_shader_parameter("replace_color", Skins.List[current_skin]["color"])
+		material.set_shader_parameter("is_rainbow", false)
+	if Skins.List[current_skin]["type"] == "rainbow":
+		
+		material.set_shader_parameter("is_rainbow", true)
+	
+	player.material = material

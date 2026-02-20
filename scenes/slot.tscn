@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://dnm2kegprv65j"]
+
+[ext_resource type="Texture2D" uid="uid://cyskeytkcmv82" path="res://sprites/FishSheet.png" id="1_4v6ba"]
+[ext_resource type="Script" uid="uid://clv14u6pr36wo" path="res://code/slot.gd" id="1_ic0fu"]
+[ext_resource type="StyleBox" uid="uid://cxps47qtey8f7" path="res://themes/default_slot.tres" id="1_vqyee"]
+[ext_resource type="Shader" uid="uid://crbtbdnotjo8v" path="res://shaders/rainbow.gdshader" id="3_5f2j7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sjnr7"]
+shader = ExtResource("3_5f2j7")
+shader_parameter/is_active = true
+shader_parameter/is_rainbow = false
+shader_parameter/speed = 1.0
+shader_parameter/precision = 0.05
+shader_parameter/replace_color = Color(1, 0, 0, 1)
+
+[node name="Panel" type="Panel" unique_id=256448204]
+custom_minimum_size = Vector2(0, 100)
+focus_mode = 1
+theme_override_styles/panel = ExtResource("1_vqyee")
+script = ExtResource("1_ic0fu")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=734759020]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_right = 18
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=864110594]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 80
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer" unique_id=381513891]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="MarginContainer/HBoxContainer/Control" unique_id=1745323828]
+material = SubResource("ShaderMaterial_sjnr7")
+scale = Vector2(5, 5)
+texture = ExtResource("1_4v6ba")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="CostLabel" type="Label" parent="MarginContainer/HBoxContainer" unique_id=529914889]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 40
+text = "112344"
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
