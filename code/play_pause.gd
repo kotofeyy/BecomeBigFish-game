@@ -8,6 +8,7 @@ const PAUSE = preload("uid://btl0jyqibtmtu")
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Pause"):
 		get_tree().paused = !get_tree().paused 
+		
 		if get_tree().paused:
 			pause_play_rect.texture = PAUSE
 			pause_play_rect.visible = true

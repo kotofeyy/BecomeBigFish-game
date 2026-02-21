@@ -49,13 +49,20 @@ var current_skin := Skins.Type.DEFAULT
 var all_scores := 0
 
 
+func update_shop() -> void:
+	shop_panel.available_skins = available_skins
+	shop_panel.current_skin = current_skin
+	shop_panel.all_scores = all_scores
+
+
 func _ready() -> void:
 	Bridge.platform.send_message("game_ready")
+	get_data()
 	TranslationServer.set_locale(Bridge.platform.language)
+	
 	clue_label.text = "KEY_PAUSE"
 	size_screen = get_window().get_visible_rect().size
 	center_of_screen = size_screen / 2
-	
 	shop_panel.available_skins = available_skins
 	shop_panel.current_skin = current_skin
 	shop_panel.all_scores = all_scores
@@ -95,7 +102,7 @@ func start_game() -> void:
 	level_label.text = tr("KEY_LEVEL") + " " + str(level)
 	clear_fishes()
 	spawn_fishes()
-	big_fish.spawn()
+	big_fish.start_swim()
 
 
 func clear_fishes() -> void:
@@ -120,7 +127,6 @@ func _process(_delta: float) -> void:
 		spawn_fishes()
 		progress_bar.min_value = score
 		max_value_of_progress_bar = max_value_of_progress_bar * 1.4
-		print("max value of progress bar - ", max_value_of_progress_bar)
 		progress_bar.max_value = level * max_value_of_progress_bar
 	if  game_is_started:
 		# добавил немного вязкозти, для ощущения под водой
@@ -300,6 +306,7 @@ func _on_timer_for_heart_timeout() -> void:
 func on_dead() -> void:
 	player.position = Vector2(-100, -100)
 	level_label.text = ""
+	progress_bar.value = 0
 	game_is_started = false
 	clear_fishes()
 	big_fish.stop_swim()
@@ -314,6 +321,7 @@ func _on_restart_button_pressed() -> void:
 	game_is_started = true
 	end_game_panel.show_self()
 	start_game()
+	big_fish.start_swim()
 
 
 func _on_cancel_button_pressed() -> void:
@@ -362,12 +370,13 @@ func get_data() -> void:
 
 func _on_storage_get_completed(success, data) -> void:
 	if success:
-		if data[0] != null: all_scores = data[0]
-		if data[1] != null: available_skins = data[1]
+		if data[0] != null: all_scores = data[0]; print("data0 - ", data[0])
+		if data[1] != null: available_skins = data[1]; print("data1 - ", data[1])
 		else:
 			current_skin = Skins.Type.DEFAULT
 			all_scores = 0
 			available_skins = 1
+		update_shop()
 	else:
 		current_skin = Skins.Type.DEFAULT
 		all_scores = 0

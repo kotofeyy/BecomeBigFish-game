@@ -19,7 +19,5 @@ collision_layer = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1774654879]
 shape = SubResource("CircleShape2D_me2ul")
 
-[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=2101519749]
-rect = Rect2(-8.815, -9, 17.605, 18)
-
-[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]
+[node name="Timer" type="Timer" parent="." unique_id=2099130795]
+autostart = true

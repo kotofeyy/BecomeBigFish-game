@@ -4,6 +4,9 @@ extends Panel
 @onready var count_of_fish_label: Label = $MarginContainer/VBoxContainer/CountOfFishLabel
 @onready var all_scores_label: Label = $MarginContainer/VBoxContainer/AllScores
 @onready var audio_end_game_score: AudioStreamPlayer = $AudioEndGameScore
+@onready var restart_button: Button = $MarginContainer/VBoxContainer/HBoxContainer/RestartButton
+@onready var cancel_button: Button = $MarginContainer/VBoxContainer/HBoxContainer/CancelButton
+
 
 
 signal on_restart
@@ -25,6 +28,8 @@ var score:
 
 func show_self() -> void:
 	visible = !visible
+	restart_button.disabled = true
+	cancel_button.disabled = true
 	update_info()
 
 
@@ -41,6 +46,9 @@ func update_info() -> void:
 		audio_end_game_score.play()
 		animate_count_of_fish(temp_score, score)
 		animate_all_score_label(temp_all_scores, all_scores)
+	else:
+		restart_button.disabled = false
+		cancel_button.disabled = false
 		
 
 
@@ -70,6 +78,10 @@ func animate_all_score_label(start_val: int, end_val: int, duration: float = 1.0
 		.set_ease(Tween.EASE_OUT)
 	tween.finished.connect(func(): 
 		emit_signal("update_scores", all_scores)
+		restart_button.disabled = false
+		cancel_button.disabled = false
+		# показ рекламы
+		Bridge.advertisement.show_interstitial()
 		)
 
 

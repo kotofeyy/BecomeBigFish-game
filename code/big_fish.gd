@@ -1,6 +1,8 @@
 class_name BigFish
 extends Sprite2D
 
+@onready var timer: Timer = $Timer
+
 
 var size_screen
 var direction
@@ -10,14 +12,9 @@ var can_swim = false
 
 func _ready() -> void:
 	size_screen = get_window().get_visible_rect().size
-
-
-func _process(delta: float) -> void:
-	if can_swim:
-		if direction == "left":
-			move_to_left(delta)
-		if direction == "right":
-			move_to_right(delta)
+	timer.start(15)
+	timer.autostart = true
+	timer.timeout.connect(_on_timer_timeout)
 
 
 func stop_swim() -> void:
@@ -25,28 +22,31 @@ func stop_swim() -> void:
 	can_swim = false
 
 
-func spawn() -> void:
-	can_swim = true
+func start_swim() -> void:
 	visible = true
-	direction = ["left", "right"].pick_random()
-	if direction == "left":
-		global_position.x = 0
-		global_position.y = randi_range(45, size_screen.y - 32)
-		flip_h = true
-	if direction == "right":
-		global_position.x = size_screen.x
-		global_position.y = randi_range(45, size_screen.y - 32)
-		flip_h = false
-		
-
-func move_to_left(delta) -> void:
-	position.x += speed * delta
+	can_swim = true
 
 
-func move_to_right(delta) -> void:
-	position.x -= speed * delta
+func move_to_left() -> void:
+	global_position.y = randi_range(45, size_screen.y - 32)
+	global_position.x = 0
+	flip_h = true
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "position:x", size_screen.x + 80, 5.5)
 
 
-func _on_visible_on_screen_enabler_2d_screen_exited() -> void:
+func move_to_right() -> void:
+	global_position.y = randi_range(45, size_screen.y - 32)
+	global_position.x = size_screen.x
+	flip_h = false
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "position:x", -80, 5.5)
+
+
+func _on_timer_timeout() -> void:
 	if can_swim:
-		spawn()
+		direction = ["left", "right"].pick_random()
+		if direction == "left":
+			move_to_left()
+		if direction == "right":
+			move_to_right()
