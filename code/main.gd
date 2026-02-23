@@ -28,6 +28,7 @@ extends Control
 @onready var skin_button: Button = $CanvasLayer/SkinButton
 @onready var end_game_panel: EndGamePanel = $CanvasLayer/EndGamePanel
 @onready var shop_panel: ShopPanel = $CanvasLayer/ShopPanel
+@onready var music_button: CheckButton = $CanvasLayer/MusicButton
 
 @onready var big_fish: BigFish = $BigFish
 
@@ -91,6 +92,7 @@ func _ready() -> void:
 func start_game() -> void:
 	get_tree().paused = false
 	skin_button.visible = false
+	music_button.visible = false
 	# здесь подтянуть с сервера
 	get_data()
 	score = 0
@@ -315,6 +317,7 @@ func on_dead() -> void:
 	scores_label.text = "0"
 	progress_bar.value = 0
 	game_is_started = false
+	music_button.visible = true
 	clear_fishes()
 	big_fish.stop_swim()
 	end_game_panel.score = score
@@ -390,10 +393,6 @@ func _on_storage_get_completed(success, data) -> void:
 		available_skins = 1
 
 
-func _on_music_button_pressed() -> void:
-	audio_main_theme.playing = !audio_main_theme.playing
-
-
 func _on_interstitial_state_changed(state) -> void:
 	if state == "opened":
 		audio_main_theme.stop()
@@ -406,3 +405,7 @@ func _on_visibility_state_changed(state) -> void:
 		audio_main_theme.stop()
 	if state == "visible":
 		audio_main_theme.play()
+
+
+func _on_music_button_toggled(toggled_on: bool) -> void:
+	audio_main_theme.playing = toggled_on

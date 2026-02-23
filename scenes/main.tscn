@@ -168,6 +168,7 @@ stream = ExtResource("3_sugp2")
 
 [node name="AudioMainTheme" type="AudioStreamPlayer" parent="." unique_id=660886390]
 stream = ExtResource("7_0ld40")
+volume_db = -10.0
 autoplay = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=953804463]
@@ -349,16 +350,19 @@ region_rect = Rect2(0, 0, 16, 16)
 [node name="ShopPanel" parent="CanvasLayer" unique_id=1305449297 instance=ExtResource("11_jbj1t")]
 visible = false
 
-[node name="MusicButton" type="Button" parent="CanvasLayer" unique_id=528576632]
+[node name="MusicButton" type="CheckButton" parent="CanvasLayer" unique_id=1132183054]
+process_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -80.0
-offset_top = 100.0
+offset_left = -167.0
+offset_top = 60.0
 offset_right = -42.0
-offset_bottom = 125.0
+offset_bottom = 101.00001
 grow_horizontal = 0
-text = "MUSIC"
+theme_override_font_sizes/font_size = 30
+button_pressed = true
+text = "KEY_MUSIC"
 
 [node name="AnimatedSpriteEat" type="AnimatedSprite2D" parent="." unique_id=1729697139]
 scale = Vector2(2, 2)
@@ -436,6 +440,6 @@ position = Vector2(-150.99994, 95.00001)
 [connection signal="area_entered" from="Player/Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="pressed" from="CanvasLayer/StartGameButton" to="." method="_on_start_game_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/SkinButton" to="." method="_on_skin_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/MusicButton" to="." method="_on_music_button_pressed"]
+[connection signal="toggled" from="CanvasLayer/MusicButton" to="." method="_on_music_button_toggled"]
 [connection signal="timeout" from="TimerForShield" to="." method="_on_timer_for_shield_timeout"]
 [connection signal="timeout" from="TimerForHeart" to="." method="_on_timer_for_heart_timeout"]
