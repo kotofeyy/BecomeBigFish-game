@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://40k46y3wemku" path="res://sprites/background.png" id="4_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://bcl21swdqovy0" path="res://sprites/heart.png" id="5_tipki"]
 [ext_resource type="AudioStream" uid="uid://76j0pr8l3y4q" path="res://sounds/magic_game_win_success.wav" id="6_tefeu"]
+[ext_resource type="AudioStream" uid="uid://dfsaemb43wbax" path="res://sounds/Golden Gleam.ogg" id="7_0ld40"]
 [ext_resource type="Texture2D" uid="uid://y1ew1qivwerl" path="res://sprites/konfetty.jpeg" id="7_o6xl0"]
 [ext_resource type="Texture2D" uid="uid://dsk5rmev8west" path="res://sprites/fish.png" id="8_dp3eg"]
 [ext_resource type="Texture2D" uid="uid://btl0jyqibtmtu" path="res://sprites/pause.png" id="8_eb6dy"]
@@ -164,6 +165,10 @@ stream = ExtResource("10_choun")
 
 [node name="AudioEat" type="AudioStreamPlayer" parent="." unique_id=1628618054]
 stream = ExtResource("3_sugp2")
+
+[node name="AudioMainTheme" type="AudioStreamPlayer" parent="." unique_id=660886390]
+stream = ExtResource("7_0ld40")
+autoplay = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=953804463]
 layer = -1
@@ -344,6 +349,17 @@ region_rect = Rect2(0, 0, 16, 16)
 [node name="ShopPanel" parent="CanvasLayer" unique_id=1305449297 instance=ExtResource("11_jbj1t")]
 visible = false
 
+[node name="MusicButton" type="Button" parent="CanvasLayer" unique_id=528576632]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -80.0
+offset_top = 100.0
+offset_right = -42.0
+offset_bottom = 125.0
+grow_horizontal = 0
+text = "MUSIC"
+
 [node name="AnimatedSpriteEat" type="AnimatedSprite2D" parent="." unique_id=1729697139]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_choun")
@@ -420,5 +436,6 @@ position = Vector2(-150.99994, 95.00001)
 [connection signal="area_entered" from="Player/Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="pressed" from="CanvasLayer/StartGameButton" to="." method="_on_start_game_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/SkinButton" to="." method="_on_skin_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MusicButton" to="." method="_on_music_button_pressed"]
 [connection signal="timeout" from="TimerForShield" to="." method="_on_timer_for_shield_timeout"]
 [connection signal="timeout" from="TimerForHeart" to="." method="_on_timer_for_heart_timeout"]

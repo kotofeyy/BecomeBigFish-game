@@ -6,6 +6,7 @@ extends Control
 @onready var audio_eat: AudioStreamPlayer = $AudioEat
 @onready var audio_level_up: AudioStreamPlayer = $AudioLevelUp
 @onready var audio_wrong: AudioStreamPlayer = $AudioWrong
+@onready var audio_main_theme: AudioStreamPlayer = $AudioMainTheme
 
 @onready var cpu_particles_2d: CPUParticles2D = $CPUParticles2D
 @onready var wrong_panel: Panel = $CanvasLayer/WrongPanel
@@ -58,6 +59,9 @@ func update_shop() -> void:
 
 func _ready() -> void:
 	Bridge.platform.send_message("game_ready")
+	Bridge.advertisement.connect("interstitial_state_changed", Callable(self, "_on_interstitial_state_changed"))
+	Bridge.game.connect("visibility_state_changed", Callable(self, "_on_visibility_state_changed"))
+	Bridge.advertisement.set_minimum_delay_between_interstitial(65)
 	get_data()
 	TranslationServer.set_locale(Bridge.platform.language)
 	
@@ -384,3 +388,21 @@ func _on_storage_get_completed(success, data) -> void:
 		current_skin = Skins.Type.DEFAULT
 		all_scores = 0
 		available_skins = 1
+
+
+func _on_music_button_pressed() -> void:
+	audio_main_theme.playing = !audio_main_theme.playing
+
+
+func _on_interstitial_state_changed(state) -> void:
+	if state == "opened":
+		audio_main_theme.stop()
+	if state == "closed":
+		audio_main_theme.play()
+
+
+func _on_visibility_state_changed(state) -> void:
+	if state == "hidden":
+		audio_main_theme.stop()
+	if state == "visible":
+		audio_main_theme.play()
