@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bcl21swdqovy0" path="res://sprites/heart.png" id="5_tipki"]
 [ext_resource type="AudioStream" uid="uid://76j0pr8l3y4q" path="res://sounds/magic_game_win_success.wav" id="6_tefeu"]
 [ext_resource type="Texture2D" uid="uid://y1ew1qivwerl" path="res://sprites/konfetty.jpeg" id="7_o6xl0"]
+[ext_resource type="Texture2D" uid="uid://dsk5rmev8west" path="res://sprites/fish.png" id="8_dp3eg"]
 [ext_resource type="Texture2D" uid="uid://btl0jyqibtmtu" path="res://sprites/pause.png" id="8_eb6dy"]
 [ext_resource type="Script" uid="uid://clgllwsf8uycq" path="res://code/play_pause.gd" id="9_85g3d"]
 [ext_resource type="AudioStream" uid="uid://t8andxrkh4cm" path="res://sounds/wrong.wav" id="10_choun"]
@@ -221,6 +222,15 @@ show_percentage = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 30
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Header/MarginContainer/VBoxContainer" unique_id=1247085563]
+layout_mode = 2
+texture = ExtResource("8_dp3eg")
+
+[node name="ScoresLabel" type="Label" parent="CanvasLayer/Header/MarginContainer/VBoxContainer" unique_id=464001598]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "0"
 
 [node name="HeartControl" type="Control" parent="CanvasLayer/Header/MarginContainer/VBoxContainer" unique_id=2066293117]
 custom_minimum_size = Vector2(200, 32)

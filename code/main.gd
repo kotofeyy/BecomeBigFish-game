@@ -19,6 +19,7 @@ extends Control
 
 @onready var progress_bar: ProgressBar = $CanvasLayer/Header/MarginContainer/VBoxContainer/ProgressBar
 @onready var level_label: Label = $CanvasLayer/Header/MarginContainer/VBoxContainer/LevelLabel
+@onready var scores_label: Label = $CanvasLayer/Header/MarginContainer/VBoxContainer/ScoresLabel
 @onready var animated_sprite_eat: AnimatedSprite2D = $AnimatedSpriteEat
 @onready var start_game_button: Button = $CanvasLayer/StartGameButton
 @onready var clue_label: Label = $CanvasLayer/ClueLabel
@@ -148,6 +149,7 @@ func on_eat_fish(pos) -> void:
 	animated_sprite_eat.global_position = pos
 	animated_sprite_eat.play("eat")
 	score += 1
+	scores_label.text = str(score)
 	update_progress()
 
 
@@ -306,6 +308,7 @@ func _on_timer_for_heart_timeout() -> void:
 func on_dead() -> void:
 	player.position = Vector2(-100, -100)
 	level_label.text = ""
+	scores_label.text = "0"
 	progress_bar.value = 0
 	game_is_started = false
 	clear_fishes()
