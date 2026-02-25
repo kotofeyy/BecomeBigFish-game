@@ -98,6 +98,7 @@ func start_game() -> void:
 	score = 0
 	level = 1
 	heart = 3
+	scale = Vector2(1.0, 1.0)
 	update_heart()
 	change_texture(level - 1)
 	player_change_skin()
