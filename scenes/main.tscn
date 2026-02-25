@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://hoso7mk5ps7k" path="res://sprites/shield.png" id="11_ya4ey"]
 [ext_resource type="Texture2D" uid="uid://ntwg8bsywljj" path="res://sprites/magnet.png" id="13_trceg"]
 [ext_resource type="PackedScene" uid="uid://ba8rmkx2daie" path="res://scenes/big_fish.tscn" id="17_muem4"]
+[ext_resource type="Script" uid="uid://bmuqd4c0iuhtv" path="res://code/system_dropping_ability.gd" id="20_gqmmt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a8y0u"]
 shader = ExtResource("10_jkv2x")
@@ -156,20 +157,6 @@ offset_bottom = 20.0
 pivot_offset = Vector2(20, 20)
 pivot_offset_ratio = Vector2(1, 0)
 theme_override_styles/panel = SubResource("StyleBoxFlat_ya4ey")
-
-[node name="AudioLevelUp" type="AudioStreamPlayer" parent="." unique_id=1624180807]
-stream = ExtResource("6_tefeu")
-
-[node name="AudioWrong" type="AudioStreamPlayer" parent="." unique_id=608301632]
-stream = ExtResource("10_choun")
-
-[node name="AudioEat" type="AudioStreamPlayer" parent="." unique_id=1628618054]
-stream = ExtResource("3_sugp2")
-
-[node name="AudioMainTheme" type="AudioStreamPlayer" parent="." unique_id=660886390]
-stream = ExtResource("7_0ld40")
-volume_db = -10.0
-autoplay = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=953804463]
 layer = -1
@@ -426,20 +413,37 @@ collision_layer = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MagnetAbility/Area2D" unique_id=941959998]
 shape = SubResource("CircleShape2D_a8y0u")
 
-[node name="TimerForShield" type="Timer" parent="." unique_id=1957096352]
-wait_time = 15.0
-autostart = true
+[node name="BigFish" parent="." unique_id=116966706 instance=ExtResource("17_muem4")]
+position = Vector2(-150.99994, 95.00001)
 
-[node name="TimerForHeart" type="Timer" parent="." unique_id=347540339]
+[node name="SystemDroppingAbility" type="Node" parent="." unique_id=1481723720]
+script = ExtResource("20_gqmmt")
+
+[node name="TimerForHeart" type="Timer" parent="SystemDroppingAbility" unique_id=347540339]
 wait_time = 10.0
 autostart = true
 
-[node name="BigFish" parent="." unique_id=116966706 instance=ExtResource("17_muem4")]
-position = Vector2(-150.99994, 95.00001)
+[node name="TimerForShield" type="Timer" parent="SystemDroppingAbility" unique_id=1957096352]
+wait_time = 15.0
+autostart = true
+
+[node name="AudioLevelUp" type="AudioStreamPlayer" parent="." unique_id=1624180807]
+stream = ExtResource("6_tefeu")
+
+[node name="AudioWrong" type="AudioStreamPlayer" parent="." unique_id=608301632]
+stream = ExtResource("10_choun")
+
+[node name="AudioEat" type="AudioStreamPlayer" parent="." unique_id=1628618054]
+stream = ExtResource("3_sugp2")
+
+[node name="AudioMainTheme" type="AudioStreamPlayer" parent="." unique_id=660886390]
+stream = ExtResource("7_0ld40")
+volume_db = -10.0
+autoplay = true
 
 [connection signal="area_entered" from="Player/Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="pressed" from="CanvasLayer/StartGameButton" to="." method="_on_start_game_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/SkinButton" to="." method="_on_skin_button_pressed"]
 [connection signal="toggled" from="CanvasLayer/MusicButton" to="." method="_on_music_button_toggled"]
-[connection signal="timeout" from="TimerForShield" to="." method="_on_timer_for_shield_timeout"]
-[connection signal="timeout" from="TimerForHeart" to="." method="_on_timer_for_heart_timeout"]
+[connection signal="timeout" from="SystemDroppingAbility/TimerForHeart" to="SystemDroppingAbility" method="_on_timer_for_heart_timeout"]
+[connection signal="timeout" from="SystemDroppingAbility/TimerForShield" to="SystemDroppingAbility" method="_on_timer_for_shield_timeout"]

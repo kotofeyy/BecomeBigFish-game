@@ -17,6 +17,8 @@ extends Control
 @onready var shield_ability: Sprite2D = $ShieldAbility
 @onready var heart_ability: Sprite2D = $HeartAbility
 @onready var magnet_ability: Sprite2D = $MagnetAbility
+@onready var system_dropping_ability: SystemDroppingAbility = $SystemDroppingAbility
+
 
 @onready var progress_bar: ProgressBar = $CanvasLayer/Header/MarginContainer/VBoxContainer/ProgressBar
 @onready var level_label: Label = $CanvasLayer/Header/MarginContainer/VBoxContainer/LevelLabel
@@ -63,8 +65,9 @@ func _ready() -> void:
 	Bridge.advertisement.connect("interstitial_state_changed", Callable(self, "_on_interstitial_state_changed"))
 	Bridge.game.connect("visibility_state_changed", Callable(self, "_on_visibility_state_changed"))
 	Bridge.advertisement.set_minimum_delay_between_interstitial(65)
-	get_data()
 	TranslationServer.set_locale(Bridge.platform.language)
+	get_data()
+	
 	
 	clue_label.text = "KEY_PAUSE"
 	size_screen = get_window().get_visible_rect().size
@@ -75,6 +78,7 @@ func _ready() -> void:
 	shop_panel.select_skin.connect(func(_current_skin, _available_skins, _all_scores):
 		current_skin = _current_skin
 		all_scores = _all_scores
+		scores_label.text = str(all_scores)
 		available_skins = _available_skins
 		player_change_skin()
 		save_data()
@@ -82,11 +86,6 @@ func _ready() -> void:
 	
 	end_game_panel.on_restart.connect(_on_restart_button_pressed)
 	end_game_panel.on_cancel.connect(_on_cancel_button_pressed)
-	end_game_panel.update_scores.connect(func(_all_scores):
-		all_scores = _all_scores
-		shop_panel.all_scores = all_scores
-		save_data()
-		)
 
 
 func start_game() -> void:
@@ -94,7 +93,7 @@ func start_game() -> void:
 	skin_button.visible = false
 	music_button.visible = false
 	# здесь подтянуть с сервера
-	get_data()
+	#get_data()
 	score = 0
 	level = 1
 	heart = 3
@@ -156,7 +155,8 @@ func on_eat_fish(pos) -> void:
 	animated_sprite_eat.global_position = pos
 	animated_sprite_eat.play("eat")
 	score += 1
-	scores_label.text = str(score)
+	all_scores += 1
+	scores_label.text = str(all_scores)
 	update_progress()
 
 
@@ -243,30 +243,7 @@ func _on_start_game_button_pressed() -> void:
 	game_is_started = true
 	start_game_button.visible = false
 	start_game()
-
-
-func on_heart_dropping() -> void:
-	heart_ability.position.x = randi_range(40, size_screen.x - 40)
-	var tween = get_tree().create_tween()
-	tween.tween_property(heart_ability, "position:y", size_screen.y + 100, 5.0)
-	tween.finished.connect(func(): 
-		heart_ability.position = Vector2(-200, 0))
-
-
-func on_shield_dropping() -> void:
-	shield_ability.position.x = randi_range(40, size_screen.x - 40)
-	var tween = get_tree().create_tween()
-	tween.tween_property(shield_ability, "position:y", size_screen.y + 100, 5.0)
-	tween.finished.connect(func(): 
-		shield_ability.position = Vector2(-200, 0))
-
-
-func on_magnet_dropping() -> void:
-	magnet_ability.position.x = randi_range(40, size_screen.x - 40)
-	var tween = get_tree().create_tween()
-	tween.tween_property(magnet_ability, "position:y", size_screen.y + 100, 5.0)
-	tween.finished.connect(func(): 
-		magnet_ability.position = Vector2(-200, 0))
+	system_dropping_ability.can_dropped = game_is_started
 
 
 func on_shield_enable() -> void:
@@ -301,28 +278,17 @@ func update_heart() -> void:
 		heart_control.add_child(new_heart)
 
 
-func _on_timer_for_shield_timeout() -> void:
-	if game_is_started:
-		on_shield_dropping()
-		on_magnet_dropping()
-
-
-func _on_timer_for_heart_timeout() -> void:
-	if game_is_started:
-		on_heart_dropping()
-
-
 func on_dead() -> void:
+	save_data()
 	player.position = Vector2(-100, -100)
 	level_label.text = ""
-	scores_label.text = "0"
 	progress_bar.value = 0
 	game_is_started = false
+	system_dropping_ability.can_dropped = game_is_started
 	music_button.visible = true
 	clear_fishes()
 	big_fish.stop_swim()
 	end_game_panel.score = score
-	end_game_panel.all_scores = all_scores
 	end_game_panel.show_self()
 	
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -330,6 +296,7 @@ func on_dead() -> void:
 
 func _on_restart_button_pressed() -> void:
 	game_is_started = true
+	system_dropping_ability.can_dropped = game_is_started
 	end_game_panel.show_self()
 	start_game()
 	big_fish.start_swim()
@@ -340,10 +307,12 @@ func _on_cancel_button_pressed() -> void:
 	start_game_button.visible = true
 	end_game_panel.show_self()
 	game_is_started = false
+	system_dropping_ability.can_dropped = game_is_started
 	skin_button.visible = true
 
 
 func _on_skin_button_pressed() -> void:
+	update_shop()
 	shop_panel.show_self()
 
 
@@ -388,10 +357,12 @@ func _on_storage_get_completed(success, data) -> void:
 			all_scores = 0
 			available_skins = 1
 		update_shop()
+		scores_label.text = str(all_scores)
 	else:
 		current_skin = Skins.Type.DEFAULT
 		all_scores = 0
 		available_skins = 1
+		scores_label.text = str(all_scores)
 
 
 func _on_interstitial_state_changed(state) -> void:
