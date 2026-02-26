@@ -110,6 +110,7 @@ func start_game() -> void:
 	clear_fishes()
 	spawn_fishes()
 	big_fish.start_swim()
+	system_dropping_ability.can_dropped = game_is_started
 
 
 func clear_fishes() -> void:
@@ -236,7 +237,7 @@ func level_up() -> void:
 	if level < 10:
 		change_texture(level - 1)
 	audio_level_up.play()
-	level_label.text = "Уровень " + str(level)
+	level_label.text = tr("KEY_LEVEL") + " " + str(level)
 
 
 func _on_start_game_button_pressed() -> void:

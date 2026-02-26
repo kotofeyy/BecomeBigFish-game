@@ -6,7 +6,7 @@ extends Node
 @onready var magnet_ability: Sprite2D = $"../MagnetAbility"
 
 
-var can_dropped = true
+var can_dropped = false
 var size_screen
 
 
